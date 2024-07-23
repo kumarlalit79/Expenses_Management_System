@@ -8,13 +8,8 @@ using Expenses_Management_System.Models;
 
 namespace Expenses_Management_System.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
-        public HomeController(MenuService menuService) : base(menuService)
-        {
-
-        }
-        ExpensesEntities db = new ExpensesEntities();
         public ActionResult Index()
         {
             var data = db.category_tbl.ToList();

@@ -17,7 +17,7 @@
 </p>
 <table class="table table-bordered red-border text-center">
     <thead>
-        <tr>
+    <tr>
             <th>#</th>
             <th>Name</th>
             <th>Address</th>
@@ -26,49 +26,49 @@
             <th>Pincode</th>
             <th>MobileNo.</th>
             <th>EmailID</th>
-            <th>Action</th>
-        </tr>
+        <th>Action</th>
+    </tr>
     </thead>
-   
+
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.user_id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.user_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.city)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.statename)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pincode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.mobile_num)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.email_id)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.created_on)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.created_by)
-                </td>*@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.user_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.user_id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.user_id })
-            </td>
-        </tr>
-    }
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.statename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pincode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mobile_num)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email_id)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.user_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.user_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.user_id })
+        </td>
+    </tr>
+}
 
 </table>

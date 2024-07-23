@@ -15,6 +15,7 @@ namespace Expenses_Management_System.Models
     public partial class expenses_tbl
     {
         public int exp_id { get; set; }
+        public string monthly_income { get; set; }
         public string item_name { get; set; }
         public string item_qty { get; set; }
         public string total_price { get; set; }

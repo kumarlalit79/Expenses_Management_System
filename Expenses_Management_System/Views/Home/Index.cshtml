@@ -16,35 +16,43 @@
 </p>
 <table class="table table-bordered red-border text-center">
     <thead>
-        <tr>
+    <tr>
             <th>#</th>
             <th>Category Name</th>
 
-            <th>Action</th>
-        </tr>
+        <th>Action</th>
+    </tr>
     </thead>
     
 
     @foreach (var item in Model)
     {
         <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.cat_id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.cat_name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.cat_id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.cat_id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.cat_id })
-                </td>
-            </tr>
-            </tbody>
-            }
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_name)
+            </td>
 
-    </table>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_on)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_by)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.cat_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.cat_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.cat_id })
+            </td>
+        </tr>
+            </tbody>
+    }
+
+</table>
 
 <p>
     @*@Html.ActionLink("User Details", "Index" , "User")

@@ -17,6 +17,7 @@ namespace Expenses_Management_System
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Signin", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
