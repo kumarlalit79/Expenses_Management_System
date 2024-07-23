@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="category_tbl">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_on" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="expenses_tbl">
+          <Key>
+            <PropertyRef Name="exp_id" />
+          </Key>
+          <Property Name="exp_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="monthly_income" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="item_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="item_qty" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="total_price" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sdate" Type="date" Nullable="false" />
+          <Property Name="created_on" Type="date" Nullable="false" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fkUserId" Type="int" />
+          <Property Name="fkCatId" Type="int" />
+          <Property Name="fkSubCatId" Type="int" />
+        </EntityType>
+        <EntityType Name="sub_category_tbl">
+          <Key>
+            <PropertyRef Name="subcat_id" />
+          </Key>
+          <Property Name="subcat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subcat_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_on" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fkcat_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sub_sub_category_tbl">
+          <Key>
+            <PropertyRef Name="sub_sub_catId" />
+          </Key>
+          <Property Name="sub_sub_catId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sub_sub_catName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_on" Type="date" Nullable="false" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fkCatId" Type="int" />
+          <Property Name="fkSubCatId" Type="int" />
+        </EntityType>
+        <EntityType Name="user_tbl">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="statename" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="pincode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mobile_num" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_on" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__expenses___fkCat__5535A963">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__expenses___fkSub__5629CD9C">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkSubCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__expenses___fkUse__5441852A">
+          <End Role="user_tbl" Type="Self.user_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_categ__fkcat__4BAC3F29">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="1" />
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="sub_category_tbl">
+              <PropertyRef Name="fkcat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_sub_c__fkCat__68487DD7">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="sub_sub_category_tbl" Type="Self.sub_sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="sub_sub_category_tbl">
+              <PropertyRef Name="fkCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_sub_c__fkSub__693CA210">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="sub_sub_category_tbl" Type="Self.sub_sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="sub_sub_category_tbl">
+              <PropertyRef Name="fkSubCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMSModelStoreContainer">
+          <EntitySet Name="category_tbl" EntityType="Self.category_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="expenses_tbl" EntityType="Self.expenses_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sub_category_tbl" EntityType="Self.sub_category_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sub_sub_category_tbl" EntityType="Self.sub_sub_category_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_tbl" EntityType="Self.user_tbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__expenses___fkCat__5535A963" Association="Self.FK__expenses___fkCat__5535A963">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__expenses___fkSub__5629CD9C" Association="Self.FK__expenses___fkSub__5629CD9C">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__expenses___fkUse__5441852A" Association="Self.FK__expenses___fkUse__5441852A">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_categ__fkcat__4BAC3F29" Association="Self.FK__sub_categ__fkcat__4BAC3F29">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_sub_c__fkCat__68487DD7" Association="Self.FK__sub_sub_c__fkCat__68487DD7">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_sub_c__fkSub__693CA210" Association="Self.FK__sub_sub_c__fkSub__693CA210">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="category_tbl">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="expenses_tbl" Relationship="Self.FK__expenses___fkCat__5535A963" FromRole="category_tbl" ToRole="expenses_tbl" />
+          <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK__sub_categ__fkcat__4BAC3F29" FromRole="category_tbl" ToRole="sub_category_tbl" />
+          <NavigationProperty Name="sub_sub_category_tbl" Relationship="Self.FK__sub_sub_c__fkCat__68487DD7" FromRole="category_tbl" ToRole="sub_sub_category_tbl" />
+        </EntityType>
+        <EntityType Name="expenses_tbl">
+          <Key>
+            <PropertyRef Name="exp_id" />
+          </Key>
+          <Property Name="exp_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="monthly_income" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="item_qty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="total_price" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fkUserId" Type="Int32" />
+          <Property Name="fkCatId" Type="Int32" />
+          <Property Name="fkSubCatId" Type="Int32" />
+          <NavigationProperty Name="category_tbl" Relationship="Self.FK__expenses___fkCat__5535A963" FromRole="expenses_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK__expenses___fkSub__5629CD9C" FromRole="expenses_tbl" ToRole="sub_category_tbl" />
+          <NavigationProperty Name="user_tbl" Relationship="Self.FK__expenses___fkUse__5441852A" FromRole="expenses_tbl" ToRole="user_tbl" />
+        </EntityType>
+        <EntityType Name="sub_category_tbl">
+          <Key>
+            <PropertyRef Name="subcat_id" />
+          </Key>
+          <Property Name="subcat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subcat_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fkcat_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="category_tbl" Relationship="Self.FK__sub_categ__fkcat__4BAC3F29" FromRole="sub_category_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="expenses_tbl" Relationship="Self.FK__expenses___fkSub__5629CD9C" FromRole="sub_category_tbl" ToRole="expenses_tbl" />
+          <NavigationProperty Name="sub_sub_category_tbl" Relationship="Self.FK__sub_sub_c__fkSub__693CA210" FromRole="sub_category_tbl" ToRole="sub_sub_category_tbl" />
+        </EntityType>
+        <EntityType Name="sub_sub_category_tbl">
+          <Key>
+            <PropertyRef Name="sub_sub_catId" />
+          </Key>
+          <Property Name="sub_sub_catId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sub_sub_catName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fkCatId" Type="Int32" />
+          <Property Name="fkSubCatId" Type="Int32" />
+          <NavigationProperty Name="category_tbl" Relationship="Self.FK__sub_sub_c__fkCat__68487DD7" FromRole="sub_sub_category_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK__sub_sub_c__fkSub__693CA210" FromRole="sub_sub_category_tbl" ToRole="sub_category_tbl" />
+        </EntityType>
+        <EntityType Name="user_tbl">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="statename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mobile_num" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="expenses_tbl" Relationship="Self.FK__expenses___fkUse__5441852A" FromRole="user_tbl" ToRole="expenses_tbl" />
+        </EntityType>
+        <Association Name="FK__expenses___fkCat__5535A963">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_categ__fkcat__4BAC3F29">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="1" />
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="sub_category_tbl">
+              <PropertyRef Name="fkcat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_sub_c__fkCat__68487DD7">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="sub_sub_category_tbl" Type="Self.sub_sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="sub_sub_category_tbl">
+              <PropertyRef Name="fkCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__expenses___fkSub__5629CD9C">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkSubCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__expenses___fkUse__5441852A">
+          <End Role="user_tbl" Type="Self.user_tbl" Multiplicity="0..1" />
+          <End Role="expenses_tbl" Type="Self.expenses_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="expenses_tbl">
+              <PropertyRef Name="fkUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sub_sub_c__fkSub__693CA210">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="sub_sub_category_tbl" Type="Self.sub_sub_category_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="sub_sub_category_tbl">
+              <PropertyRef Name="fkSubCatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMSEntities8" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="category_tbl" EntityType="Self.category_tbl" />
+          <EntitySet Name="expenses_tbl" EntityType="Self.expenses_tbl" />
+          <EntitySet Name="sub_category_tbl" EntityType="Self.sub_category_tbl" />
+          <EntitySet Name="sub_sub_category_tbl" EntityType="Self.sub_sub_category_tbl" />
+          <EntitySet Name="user_tbl" EntityType="Self.user_tbl" />
+          <AssociationSet Name="FK__expenses___fkCat__5535A963" Association="Self.FK__expenses___fkCat__5535A963">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_categ__fkcat__4BAC3F29" Association="Self.FK__sub_categ__fkcat__4BAC3F29">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_sub_c__fkCat__68487DD7" Association="Self.FK__sub_sub_c__fkCat__68487DD7">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__expenses___fkSub__5629CD9C" Association="Self.FK__expenses___fkSub__5629CD9C">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__expenses___fkUse__5441852A" Association="Self.FK__expenses___fkUse__5441852A">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="expenses_tbl" EntitySet="expenses_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sub_sub_c__fkSub__693CA210" Association="Self.FK__sub_sub_c__fkSub__693CA210">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EMSModelStoreContainer" CdmEntityContainer="EMSEntities8">
+          <EntitySetMapping Name="category_tbl">
+            <EntityTypeMapping TypeName="EMSModel.category_tbl">
+              <MappingFragment StoreEntitySet="category_tbl">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="expenses_tbl">
+            <EntityTypeMapping TypeName="EMSModel.expenses_tbl">
+              <MappingFragment StoreEntitySet="expenses_tbl">
+                <ScalarProperty Name="exp_id" ColumnName="exp_id" />
+                <ScalarProperty Name="monthly_income" ColumnName="monthly_income" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="item_qty" ColumnName="item_qty" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="sdate" ColumnName="sdate" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="fkUserId" ColumnName="fkUserId" />
+                <ScalarProperty Name="fkCatId" ColumnName="fkCatId" />
+                <ScalarProperty Name="fkSubCatId" ColumnName="fkSubCatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sub_category_tbl">
+            <EntityTypeMapping TypeName="EMSModel.sub_category_tbl">
+              <MappingFragment StoreEntitySet="sub_category_tbl">
+                <ScalarProperty Name="subcat_id" ColumnName="subcat_id" />
+                <ScalarProperty Name="subcat_name" ColumnName="subcat_name" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="fkcat_id" ColumnName="fkcat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sub_sub_category_tbl">
+            <EntityTypeMapping TypeName="EMSModel.sub_sub_category_tbl">
+              <MappingFragment StoreEntitySet="sub_sub_category_tbl">
+                <ScalarProperty Name="sub_sub_catId" ColumnName="sub_sub_catId" />
+                <ScalarProperty Name="sub_sub_catName" ColumnName="sub_sub_catName" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="fkCatId" ColumnName="fkCatId" />
+                <ScalarProperty Name="fkSubCatId" ColumnName="fkSubCatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_tbl">
+            <EntityTypeMapping TypeName="EMSModel.user_tbl">
+              <MappingFragment StoreEntitySet="user_tbl">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="statename" ColumnName="statename" />
+                <ScalarProperty Name="pincode" ColumnName="pincode" />
+                <ScalarProperty Name="mobile_num" ColumnName="mobile_num" />
+                <ScalarProperty Name="email_id" ColumnName="email_id" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.sub_category_tbl >
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Sub Category Details</h2>
+@Html.Raw(TempData["UpdateSubMsg"])
+@Html.Raw(TempData["DeleteMsg"])
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.subcat_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.category_tbl.cat_name)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.subcat_name)
+        </th>
+
+        @*<th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fkcat_id)
+        </th>*@
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.subcat_id)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.subcat_name)
+        </td>
+
+
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fkcat_id)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.subcat_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.subcat_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.subcat_id })
+        </td>
+    </tr>
+}
+
+</table>

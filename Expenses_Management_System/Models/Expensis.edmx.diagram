@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f0c1189ba32f445c908aa0202bfab928" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="EMSModel.category_tbl" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.expenses_tbl" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.sub_category_tbl" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.sub_sub_category_tbl" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMSModel.user_tbl" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="EMSModel.FK__expenses___fkCat__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__sub_categ__fkcat__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__sub_sub_c__fkCat__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__expenses___fkSub__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__expenses___fkUse__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="EMSModel.FK__sub_sub_c__fkSub__693CA210" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.category_tbl>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Category Details</h2>
+
+@Html.Raw(TempData["CreateCategory"])
+@Html.Raw(TempData["UpdateMsg"])
+@Html.Raw(TempData["DeleteMsg"])
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cat_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cat_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.created_on)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_by)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.cat_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.cat_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.cat_id })
+            </td>
+        </tr>
+    }
+
+</table>

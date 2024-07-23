@@ -1,0 +1,82 @@
+﻿@model Expenses_Management_System.Models.subcategory
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Sub category Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    
+    <hr />
+
+    <div class="form-group">
+        
+        @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Select Category name")
+        <div class="col-md-10">
+            @Html.DropDownList("cat_id", (SelectList)ViewBag.CAT, "Select Category", htmlAttributes: new { @class = "form-control" })
+            @*@Html.ValidationMessageFor(model => model.subcat_name, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.subcat_name, htmlAttributes: new { @class = "control-label col-md-2 mt-3" }, labelText: "Sub-Category Name")
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.subcat_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.subcat_name, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.subcat_id, new { htmlAttributes = new { @class = "form-control", visible = false } })
+
+        </div>
+    </div>
+    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.subcat_id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.subcat_name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.subcat_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.subcat_name, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_on, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.created_on, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.created_by, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_by, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.created_by, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.fkcat_id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fkcat_id, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fkcat_id, "", new { @class = "text-danger" })
+            </div>
+    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary mt-3 mb-2"  />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,57 @@
+﻿@model Expenses_Management_System.Models.sub_category_tbl
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>sub_category_tbl</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.subcat_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subcat_id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.subcat_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subcat_name)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>*@
+
+        @*<dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.category_tbl.cat_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category_tbl.cat_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.subcat_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
