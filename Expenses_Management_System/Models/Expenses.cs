@@ -26,6 +26,6 @@ namespace Expenses_Management_System.Models
         public string sub_sub_catName { get; set; }
         public string docpath { get; set; }
         
-
+        
     }
 }
