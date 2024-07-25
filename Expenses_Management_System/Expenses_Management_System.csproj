@@ -129,7 +129,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
     <Compile Include="Controllers\SubSubCategoryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Models\category_tbl.cs">
       <DependentUpon>Expensis.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Expenses.cs" />
     <Compile Include="Models\expenses_tbl.cs">
       <DependentUpon>Expensis.tt</DependentUpon>
     </Compile>
@@ -251,6 +254,10 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\SubSubCategory\Edit.cshtml" />
+    <Content Include="Views\Expenses\Index.cshtml" />
+    <Content Include="Views\Expenses\Create.cshtml" />
+    <Content Include="Views\Expenses\Edit.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

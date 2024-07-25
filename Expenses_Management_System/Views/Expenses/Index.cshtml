@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.expenses_tbl>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.user_tbl.user_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.monthly_income)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.category_tbl.cat_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sub_category_tbl.subcat_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.item_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.item_qty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.remark)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sdate)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>*@
+
+
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_tbl.user_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.monthly_income)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.item_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.item_qty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.remark)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sdate)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>*@
+
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.exp_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.exp_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.exp_id })
+        </td>
+    </tr>
+}
+
+</table>
