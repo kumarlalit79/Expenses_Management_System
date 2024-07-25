@@ -11,16 +11,25 @@ namespace Expenses_Management_System.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class expenses_tbl
     {
+        [Display(Name = "ID")]
         public int exp_id { get; set; }
+        [Display(Name = "Monthly Income")]
         public string monthly_income { get; set; }
+        [Display(Name = "Item Name")]
         public string item_name { get; set; }
+        [Display(Name = "Item Quantity")]
         public string item_qty { get; set; }
+        [Display(Name = "Total Price")]
         public string total_price { get; set; }
+        [Display(Name = "Remark")]
         public string remark { get; set; }
+        [Display(Name = "Date")]
         public System.DateTime sdate { get; set; }
+
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }
         public Nullable<int> fkUserId { get; set; }

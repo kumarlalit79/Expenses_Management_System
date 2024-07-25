@@ -1,0 +1,112 @@
+﻿@model Expenses_Management_System.Models.expenses_tbl
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>expenses_tbl</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.exp_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.exp_id)
+        </dd><dt>
+            @Html.DisplayNameFor(model => model.monthly_income)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.monthly_income)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.item_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.item_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.item_qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.item_qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.remark)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.remark)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sdate)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.category_tbl.cat_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category_tbl.cat_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sub_category_tbl.subcat_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sub_category_tbl.subcat_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user_tbl.user_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_tbl.user_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.exp_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

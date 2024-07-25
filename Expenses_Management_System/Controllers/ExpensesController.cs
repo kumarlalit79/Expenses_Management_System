@@ -254,5 +254,31 @@ namespace Expenses_Management_System.Controllers
                 return View(expensesData);
             }
         }
+
+        public ActionResult Details(int id)
+        {
+            using(EMSEntities8 db = new EMSEntities8())
+            {
+                var details = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).Where(model => model.exp_id == id).FirstOrDefault();
+                return View(details);
+            }
+        }
+
+        public ActionResult Delete(int id)
+        {
+            using(EMSEntities8 db = new EMSEntities8())
+            {
+                if(id > 0)
+                {
+                    var expId = db.expenses_tbl.Where(x => x.exp_id == id).FirstOrDefault();
+                    if(expId != null)
+                    {
+                        db.Entry(expId).State = EntityState.Deleted;
+                        db.SaveChanges();
+                    }
+                }
+                return View(id);
+            }
+        }
     }
 }
