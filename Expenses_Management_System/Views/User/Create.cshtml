@@ -92,7 +92,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.mobile_num, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.mobile_num, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.TextBox("Mobile Number", ViewBag.mobileNumData as string,  new { @class = "form-control" , @readonly="readonly" } )*@
+            @Html.TextBoxFor(model => model.mobile_num,  new { @class = "form-control" , @readonly="readonly" , @Value = ViewBag.mobileNumData } )
             @Html.ValidationMessageFor(model => model.mobile_num, "", new { @class = "text-danger" })
         </div>
     </div>

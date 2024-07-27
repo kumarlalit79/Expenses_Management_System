@@ -27,7 +27,7 @@ namespace Expenses_Management_System.Controllers
                 var data = db.user_tbl.ToList();
                 return View(data);
             }
-            
+
         }
 
         public ActionResult Create()
@@ -63,9 +63,9 @@ namespace Expenses_Management_System.Controllers
                 {
                     ModelState.Clear();
                 }
-               
+
             }
-            
+
         }
 
         public ActionResult Edit(int id)
@@ -103,7 +103,7 @@ namespace Expenses_Management_System.Controllers
                     return RedirectToAction("Index", "User");
                 }
             }
-            
+
         }
 
         public ActionResult Details(int id)
@@ -112,7 +112,7 @@ namespace Expenses_Management_System.Controllers
                 var ssCatId = db.user_tbl.Where(model => model.user_id == id).FirstOrDefault();
                 return View(ssCatId);
             }
-            
+
         }
 
         public ActionResult Delete(int id)
