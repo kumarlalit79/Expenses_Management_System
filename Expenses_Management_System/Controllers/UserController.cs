@@ -13,17 +13,29 @@ namespace Expenses_Management_System.Controllers
         // GET: User
         public ActionResult Index()
         {
-            using(EMSEntities8 db = new EMSEntities8())
+            using (EMSEntities8 db = new EMSEntities8())
             {
                 var data = db.user_tbl.ToList();
                 return View(data);
             }
-            
+
         }
 
         public ActionResult Create()
         {
-            
+            var Statelist = new List<string>()
+            {
+            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
+            "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+            "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+            "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+            "Uttar Pradesh", "Uttarakhand", "West Bengal"
+            };
+            ViewBag.StatelistDDl = Statelist;
+
+            string mobileSession = Session["Mobile"] as string;
+            ViewBag.mobileNumData = mobileSession;
+
             return View();
         }
 
@@ -34,29 +46,40 @@ namespace Expenses_Management_System.Controllers
             {
                 u.created_on = DateTime.Now;
                 u.created_by = "gaj";
-                var data = db.user_tbl.Add(u);
+
+                db.user_tbl.Add(u);
                 int a = db.SaveChanges();
                 if (a > 0)
                 {
-                    TempData["InsertMsg"] = "<script>alert('Inserted Successfully')</script>";
+                    //TempData["InsertMsg"] = "<script>alert('Inserted Successfully')</script>";
                     ModelState.Clear();
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Expenses");
                 }
                 else
                 {
-                    TempData["InsertMsg"] = "<script>alert('Failed Inserting')</script>";
+                    //TempData["InsertMsg"] = "<script>alert('Failed Inserting')</script>";
                     ModelState.Clear();
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Expenses");
                 }
-               
+
             }
-            
+
         }
 
         public ActionResult Edit(int id)
         {
             using (EMSEntities8 db = new EMSEntities8())
             {
+                var Statelist = new List<string>()
+                {
+                "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
+                "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+                "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+                "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+                "Uttar Pradesh", "Uttarakhand", "West Bengal"
+                };
+                ViewBag.StatelistDDl = Statelist;
+
                 var uId = db.user_tbl.Where(model => model.user_id == id).FirstOrDefault();
                 return View(uId);
             }
@@ -82,7 +105,7 @@ namespace Expenses_Management_System.Controllers
                     return RedirectToAction("Index", "User");
                 }
             }
-            
+
         }
 
         public ActionResult Details(int id)
@@ -92,7 +115,7 @@ namespace Expenses_Management_System.Controllers
                 var ssCatId = db.user_tbl.Where(model => model.user_id == id).FirstOrDefault();
                 return View(ssCatId);
             }
-            
+
         }
 
         public ActionResult Delete(int id)
@@ -113,7 +136,7 @@ namespace Expenses_Management_System.Controllers
                         }
                         else
                         {
-                            TempData["DeleteMsg"] = "<script>alert('Faild Deleted')</script>";
+                            TempData["DeleteMsg"] = "<script>alert('Failed Deleted')</script>";
 
                         }
                     }

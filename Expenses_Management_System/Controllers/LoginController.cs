@@ -24,10 +24,14 @@ namespace Expenses_Management_System.Controllers
                     var MobNum = db.user_tbl.Where(model => model.mobile_num == u.mobile_num).FirstOrDefault();
                     if(MobNum == null)
                     {
+                        Session["Mobile"] = u.mobile_num;
+                        
                         return RedirectToAction("Create" , "User");
                     }
                     else
                     {
+                        Session["userid"] = MobNum.user_id;
+
                         Session["Mobile"] = u.mobile_num;
                         return RedirectToAction("Index" , "Expenses");
                     }

@@ -17,7 +17,9 @@ namespace Expenses_Management_System.Controllers
         {
             using (EMSEntities8 db = new EMSEntities8())
             {
-                var data = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).ToList();
+                int id =int.Parse( Session["userid"].ToString());
+                  var data = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).Where(i => i.fkUserId == id).ToList();
+                //var data = db.expenses_tbl.Where(i => i.fkUserId==id).ToList();
                 return View(data);
             }
         }
@@ -70,7 +72,7 @@ namespace Expenses_Management_System.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Create(int cat_id, int subcat_id, string monthly_income, string item_name, string item_qty, string total_price, string remark)
+        public ActionResult Create(int cat_id, int subcat_id, string monthly_income, string item_name, string item_qty, string total_price, string remark , string user_name )
         {
             using (EMSEntities8 db = new EMSEntities8())
             {
@@ -79,14 +81,15 @@ namespace Expenses_Management_System.Controllers
                     expenses_tbl e = new expenses_tbl();
                     e.created_on = DateTime.Now;
                     e.created_by = "gaj";
-                    e.fkCatId = cat_id;
+                    e.fkCatId  = cat_id;
                     e.fkSubCatId = subcat_id;
-                    e.fkUserId = 1;
+                    e.fkUserId = int.Parse(Session["userid"].ToString());
                     e.monthly_income = monthly_income;
                     e.item_name = item_name;
                     e.item_qty = item_qty;
                     e.total_price = total_price;
                     e.remark = remark;
+                    //e.user_name = user_name;
 
                     db.expenses_tbl.Add(e);
                     int a = db.SaveChanges();
@@ -130,21 +133,21 @@ namespace Expenses_Management_System.Controllers
                 };
                 ViewBag.CatMsg = new SelectList(CatMaster, "cat_id", "cat_name");
 
-                var SubCategoryEntity = db.sub_category_tbl.Find(id);
-                if (SubCategoryEntity == null)
-                {
-                    TempData["ErrorMsg"] = "<script>alert('SubCategory not found')</script>";
-                    return RedirectToAction("Index", "Expenses");
-                }
+                //var SubCategoryEntity = db.sub_category_tbl.ToList();
+                //if (SubCategoryEntity == null)
+                //{
+                //    TempData["ErrorMsg"] = "<script>alert('SubCategory not found')</script>";
+                //    //return RedirectToAction("Edit", "Expenses");
+                //}
 
-                var subCategoryViewModel = new subcategory
-                {
-                    subcat_id = SubCategoryEntity.subcat_id,
-                    subcat_name = SubCategoryEntity.subcat_name,
-                    cat_id = SubCategoryEntity.fkcat_id,
-                    created_on = SubCategoryEntity.created_on,
-                    created_by = SubCategoryEntity.created_by
-                };
+                //var subCategoryViewModel = new subcategory
+                //{
+                //    subcat_id = SubCategoryEntity.subcat_id,
+                //    subcat_name = SubCategoryEntity.subcat_name,
+                //    cat_id = SubCategoryEntity.fkcat_id,
+                //    created_on = SubCategoryEntity.created_on,
+                //    created_by = SubCategoryEntity.created_by
+                //};
 
 
                 var SubCat = db.sub_category_tbl.ToList();
@@ -159,22 +162,22 @@ namespace Expenses_Management_System.Controllers
 
                 ViewBag.SubMsg = new SelectList(SubCat, "subcat_id", "subcat_name");
 
-                var SubSubCategoryEntity = db.sub_sub_category_tbl.Find(id);
-                if (SubSubCategoryEntity == null)
-                {
-                    TempData["ErrorMsg"] = "<script>alert('SubSubCategory not found')</script>";
-                    return RedirectToAction("Index", "Expenses");
-                }
+                //var SubSubCategoryEntity = db.sub_sub_category_tbl.Find(id);
+                //if (SubSubCategoryEntity == null)
+                //{
+                //    TempData["ErrorMsg"] = "<script>alert('SubSubCategory not found')</script>";
+                //    //return RedirectToAction("Edit", "Expenses");
+                //}
 
-                var subSubCategoryViewModel = new SubSubCategory
-                {
-                    sub_sub_catId = SubSubCategoryEntity.sub_sub_catId,
-                    subcat_name = SubSubCategoryEntity.sub_sub_catName,
-                    subcat_id = int.Parse(SubSubCategoryEntity.fkSubCatId.ToString()),
-                    cat_id = int.Parse(SubSubCategoryEntity.fkCatId.ToString()),
-                    created_on = SubSubCategoryEntity.created_on,
-                    created_by = SubSubCategoryEntity.created_by,
-                };
+                //var subSubCategoryViewModel = new SubSubCategory
+                //{
+                //    sub_sub_catId = SubSubCategoryEntity.sub_sub_catId,
+                //    subcat_name = SubSubCategoryEntity.sub_sub_catName,
+                //    subcat_id = int.Parse(SubSubCategoryEntity.fkSubCatId.ToString()),
+                //    cat_id = int.Parse(SubSubCategoryEntity.fkCatId.ToString()),
+                //    created_on = SubSubCategoryEntity.created_on,
+                //    created_by = SubSubCategoryEntity.created_by,
+                //};
 
                 var SubSubData = db.sub_sub_category_tbl.ToList();
                 foreach (var item in SubSubData)
@@ -187,32 +190,35 @@ namespace Expenses_Management_System.Controllers
                 }
                 ViewBag.SubSubMsg = new SelectList(SubSubMaster, "sub_sub_catId", "sub_sub_catName");
 
-                var userEntity = db.user_tbl.Find(id);
-                if (userEntity == null)
-                {
-                    TempData["ErrorMsg"] = "<script>alert('User Id not found')</script>";
-                    return RedirectToAction("Index", "Expenses");
-                }
+                //var userEntity = db.user_tbl.Find(id);
+                //if (userEntity == null)
+                //{
+                //    TempData["ErrorMsg"] = "<script>alert('User Id not found')</script>";
+                //    //return RedirectToAction("Edit", "Expenses");
+                //}
 
-                var UserViewModel = new user_tbl
-                {
-                    //user_id = userEntity.user_id,
-                    user_name = userEntity.user_name,
-                };
+                //var UserViewModel = new user_tbl
+                //{
+                //    //user_id = userEntity.user_id,
+                //    user_name = userEntity.user_name,
+                //};
 
                 var ExpenseId = db.expenses_tbl.Find(id);
                 if(ExpenseId == null)
                 {
                     TempData["ErrorMsg"] = "<script>alert('Expense Id not found')</script>";
-                    return RedirectToAction("Index", "Expenses");
+                    
                 }
                 var expenseViewModel = new expenses_tbl
                 {
                     exp_id = ExpenseId.exp_id,
 
                 };
-
+                //return RedirectToAction("Edit", "Expenses");
+                //return View("Edit");
                 return View(ExpenseId);
+
+
             }
         }
 
