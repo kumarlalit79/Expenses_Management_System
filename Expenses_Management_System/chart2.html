@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highcharts Three-Level Drilldown</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+</head>
+<body>
+    <div id="container" style="width: 80%; height: 600px; margin: 0 auto;"></div>
+
+    <script>
+        // Sample data
+        const data = [
+            { category: 'Food', subCategory: 'Fruits', subSubCategory: 'Apple', item: 'Red Apple', price: 120 },
+            { category: 'Food', subCategory: 'Fruits', subSubCategory: 'Banana', item: 'Yellow Banana', price: 80 },
+            { category: 'Food', subCategory: 'Vegetables', subSubCategory: 'Carrot', item: 'Organic Carrot', price: 50 },
+            { category: 'Electronics', subCategory: 'Phones', subSubCategory: 'Smartphone', item: 'iPhone 12', price: 999 },
+            { category: 'Electronics', subCategory: 'Laptops', subSubCategory: 'Gaming', item: 'Alienware', price: 1500 },
+            { category: 'Furniture', subCategory: 'Living Room', subSubCategory: 'Sofa', item: 'Leather Sofa', price: 600 },
+            { category: 'Furniture', subCategory: 'Bedroom', subSubCategory: 'Bed', item: 'King Size Bed', price: 800 }
+        ];
+
+        // Aggregate data
+        const aggregatedData = {
+            categories: {},
+            subCategories: {},
+            subSubCategories: {}
+        };
+
+        data.forEach(d => {
+            // Aggregate categories
+            if (!aggregatedData.categories[d.category]) {
+                aggregatedData.categories[d.category] = 0;
+            }
+            aggregatedData.categories[d.category] += d.price;
+
+            // Aggregate sub-categories
+            const subKey = `${d.category}-${d.subCategory}`;
+            if (!aggregatedData.subCategories[subKey]) {
+                aggregatedData.subCategories[subKey] = 0;
+            }
+            aggregatedData.subCategories[subKey] += d.price;
+
+            // Aggregate sub-sub-categories
+            const subSubKey = `${subKey}-${d.subSubCategory}`;
+            if (!aggregatedData.subSubCategories[subSubKey]) {
+                aggregatedData.subSubCategories[subSubKey] = 0;
+            }
+            aggregatedData.subSubCategories[subSubKey] += d.price;
+        });
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Three-Level Drilldown Pie Chart'
+            },
+            series: [{
+                name: 'Categories',
+                colorByPoint: true,
+                data: Object.keys(aggregatedData.categories).map(key => ({
+                    name: key,
+                    y: aggregatedData.categories[key],
+                    drilldown: key
+                }))
+            }],
+            drilldown: {
+                series: Object.keys(aggregatedData.subCategories).map(key => {
+                    const [category, subCategory] = key.split('-');
+                    return {
+                        id: key,
+                        name: subCategory,
+                        data: Object.keys(aggregatedData.subSubCategories)
+                            .filter(subSubKey => subSubKey.startsWith(key))
+                            .map(subSubKey => {
+                                const subSubCategory = subSubKey.split('-').slice(-1)[0];
+                                return {
+                                    name: subSubCategory,
+                                    y: aggregatedData.subSubCategories[subSubKey],
+                                    drilldown: subSubKey
+                                };
+                            })
+                    };
+                }).concat(Object.keys(aggregatedData.subSubCategories).map(key => ({
+                    id: key,
+                    name: key.split('-').slice(-1)[0],
+                    data: data.filter(d => `${d.category}-${d.subCategory}-${d.subSubCategory}` === key)
+                        .map(d => [d.item, d.price])
+                })))
+            }
+        });
+    </script>
+</body>
+</html>

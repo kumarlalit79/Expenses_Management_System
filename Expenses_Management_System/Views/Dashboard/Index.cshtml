@@ -1,0 +1,1073 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.expenses_tbl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+    // var dataList = ViewBag.Data as IEnumerable<Expenses_Management_System.Models.Expenses>;
+    // var paymode = ViewBag.pay as IEnumerable<Expenses_Management_System.Models.PaymentMode>;
+
+}
+<div class="col-xl-12">
+    <!-- Account details card-->
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="card-body">
+                <div class="row gx-3 mb-3" style="margin-top: 20px;">
+
+
+                    <div class="col-md-2" style="text-align:center;margin-top: 7px;">
+                        <label class="control-label" for="inputLastName">Year</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownList("year", (SelectList)ViewBag.Year, htmlAttributes: new { @class = "form-control", @id = "ddlYear" })
+
+                    </div>
+                    <div class="col-md-2" style="text-align:center;margin-top: 7px;">
+                        <label class="control-label" for="inputLastName">Month</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownList("monthno", (SelectList)ViewBag.Month, htmlAttributes: new { @class = "form-control", @id = "ddlMonth" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="card-body">
+        <form>
+
+            <div class="row gx-3 mb-3">-->
+        <!-- Form Group (first name)-->
+        <!--<div class="col-md-6">
+            <label class="small mb-1" for="inputFirstName">Name</label>
+            <asp:label id="lblName" class="form-control" runat="server">Gajendra Kumar</asp:label>
+        </div>-->
+        <!-- Form Group (last name)-->
+        <!--<div class="col-md-6">
+                <label class="small mb-1" for="inputLastName">Type</label>
+                <asp:label id="lblMeter" class="form-control" runat="server">Home</asp:label>
+            </div>
+        </div>-->
+        <!-- Form Row        -->
+        <!--<div class="row gx-3 mb-3">-->
+        <!-- Form Group (organization name)-->
+        <!--<div class="col-md-6">
+            <label class="small mb-1" for="inputOrgName">Mobile Number</label>
+            <asp:label id="lblMob" class="form-control" runat="server">9971****12</asp:label>
+        </div>-->
+        <!-- Form Group (location)-->
+        <!--<div class="col-md-6">
+                        <label class="small mb-1" for="inputEmailAddress">Account Number</label>
+                        <asp:label id="lblAccount" class="form-control" runat="server">12343212</asp:label>
+                    </div>
+                </div>
+            </form>
+        </div>-->
+
+        <div class="row">
+            <div class="col-md-6 col-xl-6" style="overflow-y: scroll; height:410px;">
+                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.3em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Category-Wise Spending,Aug-2024</text></div>
+                <br />
+                <table class="table table-bordered red-border text-center">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Category </th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Category_Wise_Spending">
+                        <!-- Rows will be appended here by JavaScript -->
+                    </tbody>
+                    <tfoot id="uniqueCatId">
+                        <!-- Footer will be added here -->
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6 col-xl-6">
+                <div id="containerColumn">
+
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-6">
+                <div class="card mb-3 widget-content">
+
+                    <div id="container">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-6">
+                <div class="card mb-3 widget-content">
+                    <div id="containerDrilldown"></div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+
+
+                <div id="containerLineChart">
+
+                </div>
+
+
+            </div>
+            <div class="col-md-12">
+
+
+                <div class="main-card mb-3 card" style="overflow-y: scroll; height:410px;">
+                    <div class="table-responsive">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <!-- Grid row -->
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.1em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">Monthly Spending Details</text>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        @Html.DropDownList("year", (SelectList)ViewBag.Year, htmlAttributes: new { @class = "form-control", @id = "ddlCat" })
+                                    </div>
+                                    <div class="col-md-6 col-xl-4" style="text-align:right">
+                                        <!-- Single button -->
+                                        @*<a href="@Url.Action("DownloadExcel", "Dashboard")" class="btn btn-primary">Download as Excel</a>*@
+                                        <select id="exportOptions" class="btn btn-default dropdown-toggle" style="font-weight: bold;" onchange="downloadData()">
+                                            <option value="">Select Export Format</option>
+                                            <option value="csv">Download CSV</option>
+                                            <option value="excel">Download Excel</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Grid row -->
+
+                                <br />
+                                <table class="table table-bordered red-border text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+
+                                            <th>Category </th>
+                                            <th>Sub Category</th>
+                                            <th>Sub-Sub Category </th>
+                                            <th>Item_Name </th>
+
+                                            <th>Price</th>
+                                            <th>PaymentMode</th>
+                                            <th>Receipt</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Monthly_Spending_Details">
+                                        <!-- Rows will be appended here by JavaScript -->
+                                    </tbody>
+                                    <tfoot id="uniqueFooterId">
+                                        <!-- Footer will be added here -->
+                                    </tfoot>
+                                </table>
+
+
+                            </div>
+                        </div>
+
+
+
+                        <!--<div class="card mb-4">
+                        <div class="card-body">-->
+                        <!-- Grid row -->
+                        <!--<div class="row">-->
+                        <!-- Grid column -->
+                        <!--<div class="col-md-12">
+                            <h2 class="py-3 text-center font-bold font-up success-text">Colorful table</h2>
+                        </div>-->
+                        <!-- Grid column -->
+                        <!--</div>-->
+                        <!-- Grid row -->
+                        <!--<table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Column heading</th>
+                                            <th>Column heading</th>
+                                            <th>Column heading</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-success">
+                                            <th scope="row">3</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">4</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th scope="row">5</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">6</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr class="table-warning">
+                                            <th scope="row">7</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">8</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                        <tr class="table-danger">
+                                            <th scope="row">9</th>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                            <td>Column content</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>-->
+
+                    </div>
+                </div>
+
+                @*<div class="d-block text-center card-footer">
+
+                    </div>*@
+
+            </div>
+
+            <div class="col-md-6 col-xl-6">
+                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.2em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">Payment Mode Wise Spending,Aug-2024</text></div>
+                <br />
+                <table class="table table-bordered red-border text-center">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Payment Mode </th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Paymode_Spending">
+                        <!-- Rows will be appended here by JavaScript -->
+                    </tbody>
+                    <tfoot id="uniquePaymodeId">
+                        <!-- Footer will be added here -->
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6 col-xl-6">
+                <div id="container_Paymode">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section scripts{
+    <script src="~/Scripts/HighChart/highcharts.js"></script>
+    <script src="~/Scripts/HighChart/exporting.js"></script>
+    <script src="~/Scripts/HighChart/export-data.js"></script>
+    <script src="~/Scripts/HighChart/accessibility.js"></script>
+    <script src="~/Scripts/HighChart/drilldown.js"></script>
+
+    <script defer="">
+        // Data retrieved from https://www.ssb.no/en/transport-og-reiseliv/landtransport/statistikk/bilparken
+        // Radialize the colors
+
+        $(document).ready(function () {
+
+            $('#ddlMonth').change(function () {
+                var catid = $(this).val();
+                /*var m_no = $(ddlMonth).val();*/
+               // alert(catid);
+                bindColumnChart(catid);
+                bindPaiChart(catid);
+                bindDrilldown(catid);
+                CategoryWiseSpendingfun(catid);
+                Paymode_Spending(catid);
+                BindDonutChart(catid);
+                Bind_Category(catid);
+                Bind_Monthly_Spending_Details(catid);
+            })
+            $('#ddlCat').change(function () {
+                var catid = $(this).val();
+              // alert(catid);
+                var m_no = $(ddlMonth).val();
+                Bind_Monthly_Spending_DetailsNew(catid, m_no);
+            })
+            var m_no = $(ddlMonth).val();
+            //alert(m_no);
+            /* alert('OK');*/
+            CategoryWiseSpendingfun(m_no);
+            Paymode_Spending(m_no);
+            bindColumnChart(m_no);
+            bindPaiChart(m_no);
+            bindDrilldown(m_no);
+            BindLineChart();
+            BindDonutChart(m_no);
+            Bind_Category(m_no);
+            Bind_Monthly_Spending_Details(m_no);
+
+        });
+
+        function Bind_Monthly_Spending_DetailsNew(catid, m_no) {
+            // alert('Bind_Monthly_Spending_Details');
+
+            var monthNumber = parseInt(m_no, 10); // Corrected from monthno to m_no
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+            var Catid = parseInt(catid, 10); // Corrected from monthno to m_no
+
+            $.ajax({
+                url: '@Url.Action("Monthly_Spending_Details_new", "Dashboard")', // Ensure correct controller name
+                data: { currentmonth: monthNumber, Catidno: Catid }, // Pass the integer month number
+                type: 'GET',
+                success: function (result) {
+                    //alert('okresult');
+                    // Handle the successful response here
+                    console.log(result); // Process and display the data
+                    // alert(JSON.stringify(result));
+                    $('#Monthly_Spending_Details').empty();
+
+                    var vtotal = 0;
+                    var imageUrl = '@Url.Content("~/Content/Login/OIP.jpeg")';
+                    // Populate the table with new data
+                    for (var i = 0; i < result.length; i++) {
+                        var price = parseFloat(result[i].total_price);
+                        vtotal += price;
+                        var row = $('<tr>'); // Create a new table row
+                        row.append($('<td>').text(i + 1)); // Add row number
+                        row.append($('<td style="text-align: left;">').text(result[i].cat_name)); // Add category name
+                        row.append($('<td style="text-align: left;">').text(result[i].subcat_name)); // Add price
+                        row.append($('<td style="text-align: left;">').text(result[i].sub_sub_catName)); // Add category name
+                        row.append($('<td style="text-align: left;">').text(result[i].item_name)); // Add price
+                        row.append($('<td style="text-align: right;">').text(result[i].total_price)); // Add price
+                        row.append($('<td style="text-align: left;">').text(result[i].PaymentMode)); // Add category name
+
+                        if (result[i].docpath && result[i].docpath.trim() !== '') {
+                            var docPathUrl = '@Url.Action("Download", "Dashboard")?fileName=' + encodeURIComponent(result[i].docpath);
+                            var link = $('<a>').attr('href', docPathUrl).attr('download', result[i].docpath)
+                                .append($('<img>').attr('src', imageUrl).css('height', '20px'));
+                            row.append($('<td>').append(link)); // Add document link
+                        }
+                        $('#Monthly_Spending_Details').append(row); // Append row to table body
+                    }
+                    var $tfoot = $('#uniqueFooterId');
+                    if ($tfoot.length === 0) {
+                        // Create new tfoot if not present
+                        $tfoot = $('<tfoot id="uniqueFooterId"></tfoot>');
+                        $('table').append($tfoot);
+                    } else {
+                        // Clear existing tfoot if present
+                        $tfoot.empty();
+                    }
+                    // Append new footer content
+                    //var tfootRow = $('<tr><td colspan="5"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                    //$tfoot.append(tfootRow); // Append footer row to table footer
+
+                    $('#uniqueFooterId').append('<tr><td colspan="5"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+        function Bind_Monthly_Spending_Details(m_no) {
+           // alert('Bind_Monthly_Spending_Details');
+
+            var monthNumber = parseInt(m_no, 10); // Corrected from monthno to m_no
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+
+            $.ajax({
+                url: '@Url.Action("Monthly_Spending_Details", "Dashboard")', // Ensure correct controller name
+                data: { currentmonth: monthNumber }, // Pass the integer month number
+                type: 'GET',
+                success: function (result) {
+                   //alert('okresult');
+                    // Handle the successful response here
+                    console.log(result); // Process and display the data
+                    // alert(JSON.stringify(result));
+                    $('#Monthly_Spending_Details').empty();
+
+                    var vtotal = 0;
+                    var imageUrl = '@Url.Content("~/Content/Login/OIP.jpeg")';
+                    // Populate the table with new data
+                    for (var i = 0; i < result.length; i++) {
+                        var price = parseFloat(result[i].total_price);
+                        vtotal += price;
+                        var row = $('<tr>'); // Create a new table row
+                        row.append($('<td>').text(i + 1)); // Add row number
+                        row.append($('<td style="text-align: left;">').text(result[i].cat_name)); // Add category name
+                        row.append($('<td style="text-align: left;">').text(result[i].subcat_name)); // Add price
+                        row.append($('<td style="text-align: left;">').text(result[i].sub_sub_catName)); // Add category name
+                        row.append($('<td style="text-align: left;">').text(result[i].item_name)); // Add price
+                        row.append($('<td style="text-align: right;">').text(result[i].total_price)); // Add price
+                        row.append($('<td style="text-align: left;">').text(result[i].PaymentMode)); // Add category name
+
+                        if (result[i].docpath && result[i].docpath.trim() !== '') {
+                            var docPathUrl = '@Url.Action("Download", "Dashboard")?fileName=' + encodeURIComponent(result[i].docpath);
+                            var link = $('<a>').attr('href', docPathUrl).attr('download', result[i].docpath)
+                                .append($('<img>').attr('src', imageUrl).css('height', '20px'));
+                            row.append($('<td>').append(link)); // Add document link
+                        }
+                        $('#Monthly_Spending_Details').append(row); // Append row to table body
+                    }
+                    var $tfoot = $('#uniqueFooterId');
+                    if ($tfoot.length === 0) {
+                        // Create new tfoot if not present
+                        $tfoot = $('<tfoot id="uniqueFooterId"></tfoot>');
+                        $('table').append($tfoot);
+                    } else {
+                        // Clear existing tfoot if present
+                        $tfoot.empty();
+                    }
+                    // Append new footer content
+                    //var tfootRow = $('<tr><td colspan="5"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                    //$tfoot.append(tfootRow); // Append footer row to table footer
+
+                    $('#uniqueFooterId').append('<tr><td colspan="5"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+        function Bind_Category(m_no) {
+            // alert('Bind_Monthly_Spending_Details');
+
+            var monthNumber = parseInt(m_no, 10); // Corrected from monthno to m_no
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+            $.ajax({
+                url: '@Url.Action("Monthly_Spending_Details", "Dashboard")', // Ensure correct controller name
+                data: { currentmonth: monthNumber }, // Pass the integer month number
+                type: 'GET',
+                success: function (result) {
+                    //alert('okresult');
+                    // Handle the successful response here
+                    console.log(result); // Process and display the data
+                    // alert(JSON.stringify(result));
+
+                    //******************************************************************************************//
+                    var uniqueCategories = {};
+
+                    // Loop through the data to collect unique categories
+                    result.forEach(function (item) {
+                        if (item.cat_id && item.cat_name) {
+                            uniqueCategories[item.cat_id] = item.cat_name;
+                        }
+                    });
+                    //alert(uniqueCategories);
+                    // Populate the dropdown
+                    var $dropdown = $('#ddlCat');
+                    $dropdown.empty(); // Clear existing options
+
+                    // Add default option
+                    $dropdown.append('<option value="0">All</option>');
+
+                    // Add options for each unique category
+                    $.each(uniqueCategories, function (id, name) {
+                        $dropdown.append('<option value="' + id + '">' + name + '</option>');
+                    });
+
+
+                    //******************************************************************************************//
+
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+
+        }        function Paymode_Spending(monthno) {
+           // alert('Aashi_Paymode_Spending');
+
+            var monthNumber = parseInt(monthno, 10);
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+            //alert(monthNumber);
+            $.ajax({
+                url: '@Url.Action("Paymode", "Dashboard")', // Ensure correct controller name
+                data: { currentmonth: monthNumber }, // Pass the integer month number
+                type: 'GET',
+                success: function (result) {
+                    // Handle the successful response here
+                    console.log(result); // Process and display the data
+                    // Clear previous data
+
+                    // Display the formatted data for debugging
+                    //alert(JSON.stringify(result));
+
+                    $('#Paymode_Spending').empty();
+
+                    var vtotal = 0;
+                    // Populate the table with new data
+                    for (var i = 0; i < result.length; i++) {
+                        var price = parseFloat(result[i].total_price);
+                        vtotal += price;
+                        var row = $('<tr>'); // Create a new table row
+                        row.append($('<td>').text(i + 1)); // Add row number
+                        row.append($('<td style="text-align: left;">').text(result[i].PayMode)); // Add category name
+                        row.append($('<td style="text-align: right;">').text(result[i].total_price)); // Add price
+                        $('#Paymode_Spending').append(row); // Append row to table body
+                    }
+                    // Handle footer creation and update
+                    var $tfoot = $('#uniquePaymodeId');
+                    if ($tfoot.length === 0) {
+                        // Create new tfoot if not present
+                        $tfoot = $('<tfoot id="uniquePaymodeId"></tfoot>');
+                        $('table').append($tfoot);
+                    } else {
+                        // Clear existing tfoot if present
+                        $tfoot.empty();
+                    }
+
+                    // Append new footer content
+                    $('#uniquePaymodeId').append('<tr><td colspan="2"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                   // var tfootRow = $('<tr><td colspan="2"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+                    //$tfoot.append(tfootRow); // Append footer row to table footer
+                 },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+
+        function CategoryWiseSpendingfun(monthno) {
+            //alert('Aashi');
+            // alert(monthno);
+            //Convert monthno to integer
+            var monthNumber = parseInt(monthno, 10);
+            //alert('Lucky');
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+            //alert(monthNumber);
+            $.ajax({
+                url: '@Url.Action("CategoryWiseSpending", "Dashboard")', // Ensure correct controller name
+                data: { currentmonth: monthNumber }, // Pass the integer month number
+                type: 'GET',
+                success: function (result) {
+                    // Handle the successful response here
+                    console.log(result); // Process and display the data
+                    // Clear previous data
+                    $('#Category_Wise_Spending').empty();
+
+                    var vtotal = 0;
+                    // Populate the table with new data
+                    for (var i = 0; i < result.length; i++) {
+                        var price = parseFloat(result[i].total_price);
+                        vtotal += price;
+                        var row = $('<tr>'); // Create a new table row
+                        row.append($('<td>').text(i + 1)); // Add row number
+                        row.append($('<td style="text-align: left;">').text(result[i].cat_name)); // Add category name
+                        row.append($('<td style="text-align: right;">').text(result[i].total_price)); // Add price
+                        $('#Category_Wise_Spending').append(row); // Append row to table body
+                    }
+                    var $tfoot = $('#uniqueCatId');
+                    if ($tfoot.length === 0) {
+                        // Create new tfoot if not present
+                        $tfoot = $('<tfoot id="uniqueCatId"></tfoot>');
+                        $('table').append($tfoot);
+                    } else {
+                        // Clear existing tfoot if present
+                        $tfoot.empty();
+                    }
+
+                    // Append new footer content
+                    $('#uniqueCatId').append('<tr><td colspan="2"><strong>Total</strong></td><td style="text-align:right"><strong>' + vtotal.toFixed(2) + '</strong></td></tr>');
+
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+
+        function BindLineChart() {
+
+            // alert('Line--Chart');
+            $.ajax({
+                url: '@Url.Action("GetMonthWiseWiseRPT", "Dashboard")',
+
+                type: 'GET',
+                success: function (result) {
+
+                    var MonthName1 = result.map(function (item) {
+                        return item.MonthName; // Collect category names
+                    });
+
+                    var TotalExp = result.map(function (item) {
+                        return item.total_price; // Collect category names
+                    });
+
+                    Highcharts.chart('containerLineChart', {
+                        chart: {
+                            type: 'spline'
+                        },
+                        title: {
+                            text: 'Monthly Expenses'
+                        },
+
+                        xAxis: {
+                            categories: MonthName1,
+                            accessibility: {
+                                description: 'Months of the year'
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'INR ₹ - Indian Rupee'
+                            },
+                            labels: {
+                                format: '{value}'
+                            }
+                        },
+                        tooltip: {
+                            crosshairs: true,
+                            shared: true
+                        },
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    radius: 4,
+                                    lineColor: '#666666',
+                                    lineWidth: 1
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Expenses',
+                            marker: {
+                                symbol: 'square'
+                            },
+                            data: TotalExp,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.2f}' // Display the total price with 2 decimal places
+                            }
+
+                        }]
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX request failed: ' + status + ', ' + error);
+                    // Optionally display an error message to the user
+                    alert('An error occurred: ' + error);
+                }
+            });
+
+        }
+
+        function bindColumnChart(monthno) {
+
+           // alert('Column--ColumnChart');
+            //alert(monthno);
+            $.ajax({
+                url: '@Url.Action("GetCategoryWiseRPT", "Dashboard")',
+                data: { monthn: monthno },
+                type: 'GET',
+                success: function (result) {
+                    //alert('Column--success');
+                    // Handle the data returned from the server here
+                    //var chartData = result.map(function (item) {
+                    //    return {
+                    //        name: item.cat_name, // Assuming result contains cat_name property
+                    //        y: parseFloat(item.total_price) // Convert total_price to float
+                    //    };
+                    //});
+                    var categories = result.map(function (item) {
+                        return item.cat_name; // Collect category names
+                    });
+                    var total_price = result.map(function (item) {
+                        return item.total_price; // Collect category names
+                    });
+
+                    Highcharts.chart('containerColumn', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: '',
+                            align: 'Center'
+                        },
+                        subtitle: {
+                            text:
+                                '',
+                            align: 'left'
+                        },
+                        xAxis: {
+                            categories: categories,
+                            crosshair: true,
+                            accessibility: {
+                                description: 'Countries'
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'INR ₹ - Indian Rupee'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ' (Rs)'
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [
+                            {
+                                name: 'Total Expenses',
+                                //data: [100, 10000, 5000, 2000, 500]
+                                data: total_price,
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y:.2f}' // Display the total price with 2 decimal places
+                                }
+                            }
+                        ]
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX request failed: ' + status + ', ' + error);
+                    // Optionally display an error message to the user
+                    alert('An error occurred: ' + error);
+                }
+            });
+
+        }
+
+
+        function bindPaiChart(monthno) {
+            //alert('ok pai--1');
+            //alert(monthno);
+    $.ajax({
+        url: '@Url.Action("GetCategoryWiseRPT", "Dashboard")',
+        data: { monthn: monthno },
+        type: 'GET',
+        success: function(result) {
+            // Ensure result is in the correct format
+            var chartData = result.map(function(item) {
+                return {
+                    name: item.cat_name, // Assuming result contains cat_name property
+                    y: parseFloat(item.total_price) // Convert total_price to float
+                };
+            });
+
+            // Debugging: Display the chart data
+           // alert(JSON.stringify(chartData));
+
+            // Create the Highcharts pie chart
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Category-Wise Spending, ' + result[0].MonthName + '-2024',
+                    align: 'left'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>₹{point.y:.2f}</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<span style="font-size: 1.2em"><b>{point.name}</b></span><br><span style="opacity: 0.6">{point.percentage:.1f}%</span>',
+                            connectorColor: 'rgba(128,128,128,0.5)'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Expenses',
+                    data: chartData
+                }]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX request failed: ' + status + ', ' + error);
+            alert('An error occurred: ' + error);
+        }
+    });
+}
+
+        function BindDonutChart(monthno) {
+            //alert('DonutChart');
+            // alert(monthno);
+            //Convert monthno to integer
+            var monthNumber = parseInt(monthno, 10);
+            if (isNaN(monthNumber)) { monthNumber = 0; }
+          //  alert(monthNumber);
+            $.ajax({
+        url: '@Url.Action("Paymode", "Dashboard")', // Ensure correct controller name
+        data: { currentmonth: monthNumber }, // Pass the integer month number
+        type: 'GET',
+                success: function (result) {
+                    // Convert the data into the format required for the donut chart
+                    var chartData = result.map(function (item) {
+                        return {
+                            name: item.PayMode,          // Use PaymentMode as 'name'
+                            y: parseFloat(item.total_price) // Convert total_price to float
+                        };
+                    });
+
+
+                    // Calculate the total amount
+                    var totalAmount = chartData.reduce(function (sum, point) {
+                        return sum + point.y;
+                    }, 0);
+
+                    // Display the formatted data for debugging
+                   // alert('kk');
+                    //alert(JSON.stringify(chartData));
+
+                    // Create the donut chart using Highcharts
+                    Highcharts.chart('container_Paymode', {
+                        chart: {
+                            type: 'pie',
+                            events: {
+                                render() {
+                                    const chart = this,
+                                        series = chart.series[0];
+                                    let customLabel = chart.options.chart.custom.label;
+
+                                    if (!customLabel) {
+                                        customLabel = chart.options.chart.custom.label =
+                                            chart.renderer.label(
+                                                'Total<br/>' +
+                                                '<strong>' +
+                                                totalAmount.toLocaleString() +
+                                                '</strong>'
+                                            )
+                                                .css({
+                                                    color: '#000',
+                                                    textAnchor: 'middle'
+                                                })
+                                                .add();
+                                    }
+
+                                    const x = series.center[0] + chart.plotLeft,
+                                        y = series.center[1] + chart.plotTop -
+                                            (customLabel.attr('height') / 2);
+
+                                    customLabel.attr({
+                                        x,
+                                        y
+                                    });
+
+                                    // Set font size based on chart diameter
+                                    customLabel.css({
+                                        fontSize: `${series.center[2] / 12}px`
+                                    });
+                                }
+                            }
+                        },
+                        accessibility: {
+                            point: {
+                                valueSuffix: '%'
+                            }
+                        },
+                        title: {
+                            text: 'Payment Modes Distribution'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>₹{point.y:.2f}</b>'
+                        },
+                        legend: {
+                            enabled: true
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                innerSize: '75%',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<span style="font-size: 1.2em"><b>{point.name}</b></span><br><span style="opacity: 0.6">{point.percentage:.1f}%</span>',
+                                    connectorColor: 'rgba(128,128,128,0.5)'
+                                },
+                                showInLegend: true
+                            }
+                        },
+                        series: [{
+                            name: 'Total Price',
+                            colorByPoint: true,
+                            data: chartData
+                        }]
+                    });
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+}
+
+    Highcharts.setOptions({
+    colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+    return {
+    radialGradient: {
+    cx: 0.5,
+    cy: 0.3,
+    r: 0.7
+    },
+    stops: [
+    [0, color],
+    [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+    ]
+    };
+    })
+    });
+
+    // Build the chart
+
+
+    </script>
+    <script>
+        // Data for Highcharts
+        function bindDrilldown(m_no) {
+           // alert('bindDrilldown--1');
+           // alert(m_no);
+            $.ajax({
+                url: '@Url.Action("GetSubCategoryWiseRPT", "Dashboard")',
+                data: { monthn: m_no },
+                type: 'GET',
+                success: function (result) {
+                   // alert('bindDrilldown--2--success');
+                    // Handle the data returned from the server here
+                    var chartData = result.map(function (item) {
+                        return {
+                            name: item.cat_name, // Assuming result contains cat_name property
+                            y: parseFloat(item.total_price), // Convert total_price to float
+                            drilldown: item.cat_id
+                        };
+                    });
+
+                    // Initialize Data Structure
+                    const categories = [];
+                    const subCategories = {};
+                    const subSubCategories = {};
+
+                    // Process Raw Data
+                    result.forEach(item => {
+                        // Aggregate Category Data
+                        const categoryIndex = categories.findIndex(cat => cat.drilldown === item.cat_id.toString());
+                        if (categoryIndex === -1) {
+                            categories.push({
+                                name: item.cat_name,
+                                y: 0,
+                                drilldown: item.cat_id.toString()
+                            });
+                        }
+                        categories[categoryIndex !== -1 ? categoryIndex : categories.length - 1].y += item.total_price;
+
+                        // Aggregate Sub-Category Data
+                        if (!subCategories[item.cat_id]) {
+                            subCategories[item.cat_id] = [];
+                        }
+                        const subCategoryIndex = subCategories[item.cat_id].findIndex(sub => sub.drilldown === item.cat_id.toString() + '-' + item.subcat_id);
+                        if (subCategoryIndex === -1) {
+                            subCategories[item.cat_id].push({
+                                name: item.subcat_name ,
+                                y: 0,
+                                drilldown: item.cat_id.toString() + '-' + item.subcat_id
+                            });
+                        }
+                        subCategories[item.cat_id][subCategoryIndex !== -1 ? subCategoryIndex : subCategories[item.cat_id].length - 1].y += item.total_price;
+
+                        // Aggregate Sub-Sub-Category Data
+                        const subSubCatKey = item.cat_id.toString() + '-' + item.subcat_id;
+                        if (!subSubCategories[subSubCatKey]) {
+                            subSubCategories[subSubCatKey] = [];
+                        }
+                        subSubCategories[subSubCatKey].push({
+                            name: item.sub_sub_catName,
+                            y: item.total_price
+                        });
+                    });
+                    // Format Data for Highcharts
+                    const highchartsData = {
+                        categories: categories,
+                        subCategories: Object.keys(subCategories).reduce((acc, key) => {
+                            acc[key] = subCategories[key];
+                            return acc;
+                        }, {}),
+                        subSubCategories: Object.keys(subSubCategories).reduce((acc, key) => {
+                            acc[key] = subSubCategories[key];
+                            return acc;
+                        }, {})
+                    };
+
+
+
+                    // Highcharts configuration
+                    Highcharts.chart('containerDrilldown', {
+                        chart: {
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'Three-Level Drilldown Pie Chart'
+                        },
+                        series: [{
+                            name: 'Category',
+                            colorByPoint: true,
+                            data: highchartsData.categories
+                        }],
+                        drilldown: {
+                            series: Object.keys(highchartsData.subCategories).map(function (key) {
+                                return {
+                                    id: key,
+                                    name: key.split('-')[1],
+                                    data: highchartsData.subCategories[key]
+                                };
+                            }).concat(Object.keys(highchartsData.subSubCategories).map(function (key) {
+                                return {
+                                    id: key,
+                                    name: key.split('-')[2] || 'Sub-Category',
+                                    data: highchartsData.subSubCategories[key]
+                                };
+                            }))
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX request failed: ' + status + ', ' + error);
+                    // Optionally display an error message to the user
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+
+    </script>
+    <script>
+    function downloadData() {
+        var format = document.getElementById("exportOptions").value;
+        if (format) {
+            window.location.href = '@Url.Action("DownloadFile", "Dashboard")?format=' + format;
+        }
+    }
+    </script>
+}

@@ -1,0 +1,192 @@
+﻿@model Expenses_Management_System.Models.Expenses
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Create New Expenses</h2>
+
+
+@*@using (Html.BeginForm("Create", "Expenses", FormMethod.Post))*@
+@using (Html.BeginForm("Create", "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Category")
+                    @Html.DropDownList("cat_id", (SelectList)ViewBag.catMsg, "Select Category", htmlAttributes: new { @class = "form-control", @id = "ddlcategory" })
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Sub-Sub Category")
+                    @Html.DropDownList("sub_sub_catId", (SelectList)ViewBag.subsubCatMsg, "Select Sub Sub Category", htmlAttributes: new { @class = "form-control", @id = "ddlsubsubcategory" })
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.item_qty, htmlAttributes: new { @class = "control-label" }, labelText: "Qty")
+                    @Html.EditorFor(model => model.item_qty, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Payment Mode")
+                    @Html.DropDownList("PM_id", (SelectList)ViewBag.paym, "Select Payment Mode", htmlAttributes: new { @class = "form-control", @id = "ddlPaymode" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.sdate, htmlAttributes: new { @class = "control-label" }, labelText: "Date")
+                    @Html.EditorFor(model => model.sdate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                </div>
+                <div class="form-group">
+
+                    <input type="file" name="ImageFile" />
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Sub Category")
+                    @Html.DropDownList("subcat_id", (SelectList)ViewBag.subCatMsg, "Select Sub Category", htmlAttributes: new { @class = "form-control", @id = "ddlsubcategory" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.item_name, htmlAttributes: new { @class = "control-label" }, labelText: "Item Name")
+                    @Html.EditorFor(model => model.item_name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Price")
+                    @Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Select Bank")
+                    @Html.DropDownList("acid", (SelectList)ViewBag.bank, "Select Bank", htmlAttributes: new { @class = "form-control", @id = "ddlBank" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.remark, htmlAttributes: new { @class = "control-label" }, labelText: "Remark")
+                    @Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    <div class="text-left">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                bindsub();
+                bindBank();
+            });
+
+
+        function bindBank() {
+
+            $('#ddlPaymode').change(function () {
+                var payid = $(this).val();
+                //alert(payid);
+                if (payid) {
+         $.ajax({
+              url: '@Url.Action("GetBank", "Expenses")',
+             type: 'GET',
+             data: { paymodeid: payid },
+             type: "Get",
+
+             success: function(data){
+                //var aa = json.stringify(data);
+                // alert('OK');
+                 var bank = $('#ddlBank');
+                 bank.empty();
+
+
+
+                 bank.append($('<option></option>').val('').html('Select Bank'));
+                     for (var i = 0; i < data.length; i++) {
+                         bank.append($('<option></option>').val(data[i].acid).html(data[i].bankname));
+                     }
+             }
+         });
+     }
+            })
+        }
+        function bindsub() {
+
+             $('#ddlcategory').change(function () {
+     var catid = $(this).val();
+      //alert(catid);
+     if (catid) {
+         $.ajax({
+              url: '@Url.Action("GetSubcat", "Expenses")',
+             type: 'GET',
+             data: { categoryid: catid },
+             type: "Get",
+
+             success: function(data){
+                //var aa = json.stringify(data);
+                // alert('OK');
+                 var subcat = $('#ddlsubcategory');
+                 subcat.empty();
+
+                 var subsubcat = $('#ddlsubsubcategory');
+                 subsubcat.empty();
+                 subsubcat.append($('<option></option>').val('').html('Select SubSubategory'));
+
+                 subcat.append($('<option></option>').val('').html('Select Subategory'));
+                     for (var i = 0; i < data.length; i++) {
+                         subcat.append($('<option></option>').val(data[i].subcat_id).html(data[i].subcat_name));
+                     }
+             }
+         });
+     }
+ })
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddlsubcategory').change(function () {
+                var subcatid = $(this).val();
+                var catid = $('#ddlcategory').val();
+               // alert(subcatid);
+                if (subcatid) {
+                    $.ajax({
+                         url: '@Url.Action("GetSubSubcat", "Expenses")',
+                        type: 'GET',
+                        data: { subcategoryid: subcatid, categoryid:catid },
+                        type: "Get",
+
+                        success: function(data){
+                           //var aa = json.stringify(data);
+                           // alert('OK');
+                            var subcat = $('#ddlsubsubcategory');
+                            subcat.empty();
+                            subcat.append($('<option></option>').val('').html('Select SubSubategory'));
+                                for (var i = 0; i < data.length; i++) {
+                                    subcat.append($('<option></option>').val(data[i].sub_sub_catId).html(data[i].sub_sub_catName));
+                                }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+}

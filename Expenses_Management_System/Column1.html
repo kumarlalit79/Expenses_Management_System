@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts Three-Level Drilldown Example</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+</head>
+<body>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+   
+        <div id="container"></div>
+        <!--<p class="highcharts-description">
+            A basic column chart comparing estimated corn and wheat production
+            in some countries.
+
+            The chart is making use of the axis crosshair feature, to highlight
+            the hovered country.
+        </p>-->
+
+<script>
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Category-wise spending, 2024',
+            align: 'Center'
+        },
+        subtitle: {
+            text:
+                '',
+            align: 'left'
+        },
+        xAxis: {
+            categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
+            crosshair: true,
+            accessibility: {
+                description: 'Countries'
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Indian Rupee'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' (Rs)'
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [
+            {
+                name: 'Category',
+                data: [100, 10000, 5000, 2000, 500, 3500]
+            }
+        ]
+    });
+
+</script>
+</body>
+</html>

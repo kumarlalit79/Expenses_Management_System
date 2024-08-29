@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.Monthly_Income_tbl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered red-border text-center">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MonthName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monthly_income)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    @{
+        // Initialize the counter variable
+        int itemCount= 0;
+
+    foreach (var item in Model)
+    {
+        itemCount++;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => itemCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonthName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Monthly_income)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Mid }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Mid }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Mid })
+            </td>
+        </tr>
+        }
+    }
+
+</table>

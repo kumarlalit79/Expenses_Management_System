@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.user_tbl>
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/Master.cshtml";
+}
+
+
+<h2>User Details</h2>
+@*@Html.Raw(TempData["InsertMsg"])
+@Html.Raw(TempData["UpdateMsg"])
+@Html.Raw(TempData["DeleteMsg"])*@
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered red-border text-center">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Pincode</th>
+            <th>MobileNo.</th>
+            <th>EmailID</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+   
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.statename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pincode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mobile_num)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email_id)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.created_on)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.created_by)
+                </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.user_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.user_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.user_id })
+            </td>
+        </tr>
+    }
+
+</table>

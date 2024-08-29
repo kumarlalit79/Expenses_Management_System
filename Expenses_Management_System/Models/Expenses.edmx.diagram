@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="07149b9f59e64b04abe05df357765146" Name="Diagram1">
+        <EntityTypeShape EntityType="ExpensesnewModel.AssignCardToBank_tbl" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.BankCard" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.category_tbl" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.expenses_tbl" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.Monthly_Income_tbl" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.PaymentMode_tbl" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.sub_category_tbl" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.sub_sub_category_tbl" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExpensesnewModel.user_tbl" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <AssociationConnector Association="ExpensesnewModel.FK_AssignCardToBank_tbl_BankCard" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_AssignCardToBank_tbl_PaymentMode_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_AssignCardToBank_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_expenses_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_sub_category_tbl_sub_category_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_sub_sub_category_tbl_category_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_expenses_tbl1" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_sub_sub_category_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_user_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_Monthly_Income_tbl_user_tbl" ManuallyRouted="false" />
+        <AssociationConnector Association="ExpensesnewModel.FK_sub_sub_category_tbl_sub_category_tbl" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,120 @@
+﻿@model Expenses_Management_System.Models.sub_sub_category_tbl
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Create Sub-Sub Category</h2>
+
+@using (Html.BeginForm("Create", "SubSubCategory", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @*@Html.Label("Sub Category")*@
+            @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Category")
+            <div class="col-md-10">
+                @Html.DropDownList("cat_id", (SelectList)ViewBag.CAT, "Select Category", htmlAttributes: new { @class = "form-control", @id = "ddlcategory" })
+                @*@Html.ValidationMessageFor(model => model.sub_sub_catName, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.Label("Sub Sub Category")*@
+            @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Sub Category")
+            <div class="col-md-10">
+                @Html.DropDownList("subcat_id", (SelectList)ViewBag.subCat, "Select Sub Category", htmlAttributes: new { @class = "form-control", @id = "ddlsubcategory" })
+                @*@Html.ValidationMessageFor(model => model.sub_sub_catName, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sub_sub_catName, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Sub-Sub Category")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sub_sub_catName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sub_sub_catName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.created_on, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.created_on, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.created_by, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.created_by, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.created_by, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.fkCatId, "fkCatId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("fkCatId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.fkCatId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.fkSubCatId, "fkSubCatId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("fkSubCatId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.fkSubCatId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary mt-3" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+
+
+
+</div>
+
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $('#ddlcategory').change(function () {
+                    var catid = $(this).val();
+                    // alert(catid);
+                    if (catid) {
+                        $.ajax({
+                             url: '@Url.Action("GetSubcat", "SubSubCategory")',
+                            type: 'GET',
+                            data: { categoryid: catid },
+                            type: "Get",
+                           
+                            success: function(data){
+                               //var aa = json.stringify(data);
+                              //  alert('OK');
+                                var subcat = $('#ddlsubcategory');
+                                subcat.empty();
+                                subcat.append($('<option></option>').val('').html('Select Subategory'));
+                                    for (var i = 0; i < data.length; i++) {
+                                        subcat.append($('<option></option>').val(data[i].subcat_id).html(data[i].subcat_name));
+                                    }
+                            }
+                        });
+                    }
+                })
+            });
+    </script>
+}

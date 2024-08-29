@@ -1,0 +1,72 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie Chart with Drilldown</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+</head>
+<body>
+    <div id="container" style="width: 80%; height: 600px; margin: 0 auto;"></div>
+
+    <script>
+        // Initial data for the pie chart
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie',
+                events: {
+                    click: function (event) {
+                        console.log('Clicked: ', event);
+                    }
+                }
+            },
+            title: {
+                text: 'Main Categories'
+            },
+            series: [{
+                name: 'Categories',
+                colorByPoint: true,
+                data: [{
+                    name: 'Category A',
+                    y: 55,
+                    drilldown: 'categoryA'
+                }, {
+                    name: 'Category B',
+                    y: 30,
+                    drilldown: 'categoryB'
+                }, {
+                    name: 'Category C',
+                    y: 15,
+                    drilldown: 'categoryC'
+                }]
+            }],
+            drilldown: {
+                series: [{
+                    id: 'categoryA',
+                    name: 'Category A Details',
+                    data: [
+                        ['Sub-category A1', 10],
+                        ['Sub-category A2', 20],
+                        ['Sub-category A3', 25]
+                    ]
+                }, {
+                    id: 'categoryB',
+                    name: 'Category B Details',
+                    data: [
+                        ['Sub-category B1', 15],
+                        ['Sub-category B2', 10],
+                        ['Sub-category B3', 5]
+                    ]
+                }, {
+                    id: 'categoryC',
+                    name: 'Category C Details',
+                    data: [
+                        ['Sub-category C1', 8],
+                        ['Sub-category C2', 7]
+                    ]
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

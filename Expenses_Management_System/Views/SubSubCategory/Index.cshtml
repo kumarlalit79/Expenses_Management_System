@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.sub_sub_category_tbl>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Sub-Sub Category Details</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered red-border text-center">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Sub Category Name</th>
+            <th>Sub Sub Category Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.sub_sub_catId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sub_sub_catName)
+            </td>
+
+
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.created_on)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.created_by)
+                </td>*@
+            @*
+            *@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.sub_sub_catId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.sub_sub_catId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.sub_sub_catId })
+            </td>
+        </tr>
+    }
+
+</table>

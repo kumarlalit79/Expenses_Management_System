@@ -1,0 +1,54 @@
+﻿@model Expenses_Management_System.Models.Monthly_Income_tbl
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Create Monthly Income</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4></h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Year")
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.MonthName, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.DropDownListFor(model => model.Year, new SelectList(ViewBag.YearlistDDl), "Select Year", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MonthName, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "MonthName")
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.MonthName, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.DropDownListFor(model => model.MonthName, new SelectList(ViewBag.MonthlistDDl), "Select Month", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Monthly_income, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Monthly Income")
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Monthly_income, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Monthly_income, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

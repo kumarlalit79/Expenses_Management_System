@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Highcharts Three-Level Drilldown Pie Chart</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <style>
+        #container {
+            height: 600px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        // Data for Highcharts
+        const data = {
+            categories: [
+                { name: "Baby Care", y: 950, drilldown: "BabyCare" },
+                { name: "Medical", y: 347, drilldown: "Medical" },
+                { name: "Recharge", y: 1209, drilldown: "Recharge" },
+                { name: "Rent", y: 21048, drilldown: "Rent" },
+                { name: "Loan", y: 30500, drilldown: "Loan" }
+            ],
+            subCategories: {
+                BabyCare: [
+                    { name: "Online", y: 950, drilldown: "BabyCare-Online" },
+                   // { name: "Offline", y: 347, drilldown: "callCenter-region2" },
+                    //{ name: "Airtel", y: 580, drilldown: "callCenter-region3" },
+                    //{ name: "Jio", y: 629, drilldown: "callCenter-region4" },
+                    //{ name: "Electricity Bill", y: 10048, drilldown: "callCenter-region5" }
+                ],
+                Medical: [
+                    { name: "Online", y: 347, drilldown: "Medical-Online" },
+                    //{ name: "Region 2", y: 1000, drilldown: "thirdParty-region2" },
+                    //{ name: "Region 3", y: 1000, drilldown: "thirdParty-region3" },
+                    //{ name: "Region 4", y: 1000, drilldown: "thirdParty-region4" },
+                    //{ name: "Region 5", y: 5000, drilldown: "thirdParty-region5" }
+                ],
+                Recharge: [
+                    { name: "Airtel", y: 580, drilldown: "Recharge-Airtel" },
+                    { name: "Jio", y: 629, drilldown: "Recharge-Jio" },
+                    //{ name: "Region 3", y: 1000, drilldown: "web-region3" },
+                    //{ name: "Region 4", y: 1000, drilldown: "web-region4" },
+                    //{ name: "Region 5", y: 5000, drilldown: "web-region5" }
+                ],
+                Rent: [
+                    { name: "Electricity Bill", y: 10048, drilldown: "Rent-ElectricityBill" },
+                    { name: "House Rent", y: 11000, drilldown: "Rent-HouseRent" },
+                    //{ name: "Region 3", y: 1000, drilldown: "mobile-region3" },
+                    //{ name: "Region 4", y: 1000, drilldown: "mobile-region4" },
+                    //{ name: "Region 5", y: 5000, drilldown: "mobile-region5" }
+                ],
+                Loan: [
+                    { name: "Personal Loan", y: 30500, drilldown: "Loan-PersonalLoan" },
+                    //{ name: "Region 2", y: 1000, drilldown: "inStore-region2" },
+                    //{ name: "Region 3", y: 1000, drilldown: "inStore-region3" },
+                    //{ name: "Region 4", y: 1000, drilldown: "inStore-region4" },
+                    //{ name: "Region 5", y: 5000, drilldown: "inStore-region5" }
+                ]
+            },
+            subSubCategories: {
+                "BabyCare-Online": [
+                    { name: "Apollo pharmacy", y: 950 },
+                    //{ name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Medical-Online": [
+                    { name: "Apollo pharmacy", y: 347 },
+                  //  { name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Recharge-Airtel": [
+                    { name: "MyFather_Air_Number", y: 580 },
+                    //{ name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Recharge-Jio": [
+                    { name: "MyJioNumber", y: 629 },
+                    //{ name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Rent-ElectricityBill": [
+                    { name: "Shop", y: 10048 },
+                    //{ name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Rent-HouseRent": [
+                    { name: "B-159 Delta I", y: 11000 },
+                    //{ name: "Label 2", y: 6150 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ],
+                "Loan-PersonalLoan": [
+                    { name: "NCBEMI", y: 4500 },
+                    { name: "TiwariTraders", y: 26000 },
+                    //{ name: "Label 3", y: 6832 },
+                    //{ name: "Label 4", y: 7516 },
+                    //{ name: "Label 5", y: 6291 }
+                ]
+            }
+        };
+
+        // Highcharts configuration
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Three-Level Drilldown Pie Chart'
+            },
+            series: [{
+                name: 'Category',
+                colorByPoint: true,
+                data: data.categories
+            }],
+            drilldown: {
+                series: Object.keys(data.subCategories).map(function (key) {
+                    return {
+                        id: key,
+                        name: key.split('-')[1],
+                        data: data.subCategories[key]
+                    };
+                }).concat(Object.keys(data.subSubCategories).map(function (key) {
+                    return {
+                        id: key,
+                        name: key.split('-')[2] || 'Sub-Category',
+                        data: data.subSubCategories[key]
+                    };
+                }))
+            }
+        });
+    </script>
+</body>
+
+</html>
