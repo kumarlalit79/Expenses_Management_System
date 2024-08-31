@@ -556,10 +556,14 @@
                 data: { currentmonth: monthNumber }, // Pass the integer month number
                 type: 'GET',
                 success: function (result) {
+
+                    //var chartTitle = "Category-Wise Spending, " + result[0].MonthName + "-2024";
+                    //$('#chart-heading').text(chartTitle);
+
                     // Handle the successful response here
                     console.log(result); // Process and display the data
                     // Clear previous data
-                    $('#Category_Wise_Spending').empty();
+                    $('#Category_Wise_Spending').empty();   
 
                     var vtotal = 0;
                     // Populate the table with new data

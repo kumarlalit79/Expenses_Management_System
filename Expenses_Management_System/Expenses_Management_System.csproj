@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MonthlyIncomeController.cs" />
+    <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
     <Compile Include="Controllers\SubSubCategoryController.cs" />
@@ -308,6 +309,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Test.html" />
     <Content Include="Views\Dashboard.html" />
     <Content Include="EMSDashboard.html" />
     <Content Include="Views\IMG\dollar_square_icon_242365.png" />
@@ -352,6 +354,7 @@
     <Content Include="Views\MonthlyIncome\Edit.cshtml" />
     <Content Include="Views\MonthlyIncome\Details.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\MyAccount\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

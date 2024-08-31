@@ -5,109 +5,86 @@
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<h2>Details</h2>
+<h2 class="mb-4">Expense Details</h2>
 
-<div>
-    <h4>expenses_tbl</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.exp_id)
-        </dt>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Expense Information</h4>
+            <hr />
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Expense ID</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.exp_id)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.exp_id)
-        </dd><dt>
-            @Html.DisplayNameFor(model => model.monthly_income)
-        </dt>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Item Name</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.item_name)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.monthly_income)
-        </dd>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Quantity</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.item_qty)
+                </div>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.item_name)
-        </dt>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Total Price</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.total_price)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.item_name)
-        </dd>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Remark</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.remark)
+                </div>
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.item_qty)
-        </dt>
+        <div class="col-md-6">
+            <h4>Category Information</h4>
+            <hr />
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Category</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.category_tbl.cat_name)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.item_qty)
-        </dd>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Sub Category</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.sub_category_tbl.subcat_name)
+                </div>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.total_price)
-        </dt>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">User</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.user_tbl.user_name)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.total_price)
-        </dd>
+            <div class="row mb-3">
+                <label class="col-sm-4 font-weight-bold">Date</label>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.sdate)
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.sdate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sdate)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.created_on)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.created_on)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.created_by)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.created_by)
-        </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.category_tbl.cat_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.category_tbl.cat_name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.sub_category_tbl.subcat_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sub_category_tbl.subcat_name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.user_tbl.user_name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.user_tbl.user_name)
-        </dd>
-
-    </dl>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.exp_id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ml-2" })
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.exp_id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

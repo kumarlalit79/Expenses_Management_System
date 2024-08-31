@@ -326,6 +326,8 @@ namespace Expenses_Management_System.Controllers
         {
             using (ExpensesEntities db = new ExpensesEntities())
             {
+                int id = int.Parse(Session["userid"].ToString());
+
                 //int monthnumber = 8;
                 //if (string.IsNullOrEmpty(currentmonth))
                 //{
@@ -337,8 +339,6 @@ namespace Expenses_Management_System.Controllers
 
 
                 //}
-
-                int id = int.Parse(Session["userid"].ToString());
 
                 List<Expenses> exp = new List<Expenses>();
                 var rawData = db.expenses_tbl

@@ -11,7 +11,8 @@ namespace Expenses_Management_System.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class user_tbl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,12 +23,18 @@ namespace Expenses_Management_System.Models
         }
     
         public int user_id { get; set; }
+        
         public string user_name { get; set; }
+        
         public string address { get; set; }
+        
         public string city { get; set; }
+        
         public string statename { get; set; }
+        
         public string pincode { get; set; }
         public string mobile_num { get; set; }
+        
         public string email_id { get; set; }
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }

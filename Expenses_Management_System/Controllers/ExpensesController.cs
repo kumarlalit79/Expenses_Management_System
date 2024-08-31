@@ -380,11 +380,12 @@ namespace Expenses_Management_System.Controllers
             using(ExpensesEntities db = new ExpensesEntities())
             {
                 
-               // var details = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).Where(model => model.exp_id == id).FirstOrDefault();
-                return View();
+                var details = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).Where(model => model.exp_id == id).FirstOrDefault();
+                return View(details);
             }
         }
 
+        
         public ActionResult Delete(int id)
         {
             using(ExpensesEntities db = new ExpensesEntities())
