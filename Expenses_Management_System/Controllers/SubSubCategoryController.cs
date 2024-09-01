@@ -142,21 +142,23 @@ namespace Expenses_Management_System.Controllers
 
                 ViewBag.CAT = new SelectList(catmstt, "cat_id", "cat_name");
 
-                var subCategoryEntity = db.sub_category_tbl.Find(id);
+                //var subCategoryEntity = db.sub_category_tbl.Find(id).fkcat_id;
+                var subCategoryEntity = db.sub_sub_category_tbl.FirstOrDefault(x => x.sub_sub_catId == id);
+
                 if (subCategoryEntity == null)
                 {
                     TempData["ErrorMsg"] = "<script>alert('SubCategory not found')</script>";
                     return RedirectToAction("Index", "SubSubCategory");
                 }
 
-                var subCategoryViewModel = new Expenses_Management_System.Models.subcategory
-                {
-                    subcat_id = subCategoryEntity.subcat_id,
-                    subcat_name = subCategoryEntity.subcat_name,
-                    cat_id = subCategoryEntity.fkcat_id,
-                    created_on = subCategoryEntity.created_on,
-                    created_by = subCategoryEntity.created_by
-                };
+                //var subCategoryViewModel = new Expenses_Management_System.Models.subcategory
+                //{
+                //    subcat_id = subCategoryEntity.subcat_id,
+                //    subcat_name = subCategoryEntity.subcat_name,
+                //    cat_id = subCategoryEntity.fkcat_id,
+                //    created_on = subCategoryEntity.created_on,
+                //    created_by = subCategoryEntity.created_by
+                //};
 
                 // Sub Category.
 
@@ -185,7 +187,7 @@ namespace Expenses_Management_System.Controllers
                     created_on = subsubCategoryEntity.created_on,
                     created_by = subsubCategoryEntity.created_by,
                 };
-                return View();
+                return View(subsubCategoryViewModel);
             }
 
             
@@ -266,8 +268,8 @@ namespace Expenses_Management_System.Controllers
         {
             using (ExpensesEntities db = new ExpensesEntities())
             {
-              //  var ssCatId = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Where(model => model.sub_sub_catId == id).FirstOrDefault();
-                return View();
+                var ssCatId = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Where(model => model.sub_sub_catId == id).FirstOrDefault();
+                return View(ssCatId);
             }
 
         }

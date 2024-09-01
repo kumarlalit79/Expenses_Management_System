@@ -94,24 +94,7 @@ namespace Expenses_Management_System.Controllers
             List<category_tbl> catmst = new List<category_tbl>();
             using (ExpensesEntities db = new ExpensesEntities())
             {
-                //var catId = db.sub_category_tbl.Where(model => model.subcat_id == id).FirstOrDefault();
-
-                //var allData = db.category_tbl.ToList();
-
-                //foreach (var item in allData)
-                //{
-                //    catmst.Add(new category_tbl
-                //    {
-                //        cat_id = int.Parse(item.cat_id.ToString()),
-                //        cat_name = item.cat_name.ToString(),
-                //    }); ;
-                //}
-
-                //ViewBag.CAT = new SelectList(catmst, "cat_id", "cat_name");
-                //return View();
-
-
-
+                
                 var allData = db.category_tbl.ToList();
                 var catmstt = allData.Select(item => new category_tbl
                 {
@@ -150,27 +133,6 @@ namespace Expenses_Management_System.Controllers
         {
             using(ExpensesEntities db = new ExpensesEntities())
             {
-                //sub_category_tbl s = new sub_category_tbl();
-
-                //s.created_on = DateTime.Now;
-                //s.created_by = "lalit";
-                ////s.fkcat_id = cat_id;
-                ////s.subcat_name = subcat_name;
-                //db.Entry(s).State = EntityState.Modified;
-                //int a = db.SaveChanges();
-                //if (a > 0)
-                //{
-                //    TempData["UpdateSubMsg"] = "<script>alert('Category Updated successfully')</script>";
-                //    ModelState.Clear();
-                //    return RedirectToAction("Index", "SubCategory");
-                //}
-                //else
-                //{
-                //    TempData["UpdateSubMsg"] = "<script>alert('Category not Updated')</script>";
-                //    ModelState.Clear();
-                //    return RedirectToAction("Index", "SubCategory");
-                //}
-
                 if (s.subcat_id == 0)
                 {
                     TempData["UpdateSubMsg"] = "<script>alert('Invalid SubCategory ID')</script>";

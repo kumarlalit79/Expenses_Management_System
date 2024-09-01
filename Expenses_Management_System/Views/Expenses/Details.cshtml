@@ -1,90 +1,95 @@
 ﻿@model Expenses_Management_System.Models.expenses_tbl
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Expense Details";
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<h2 class="mb-4">Expense Details</h2>
+<h2 class="text-center mb-4">Expense Details</h2>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Expense Information</h4>
-            <hr />
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Expense ID</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.exp_id)
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row">
+            <!-- Expense Information Section -->
+            <div class="col-md-6">
+                <h4 class="text-primary">Expense Information</h4>
+                <hr />
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Expense ID</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.exp_id)
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Item Name</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.item_name)
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Quantity</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.item_qty)
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Total Price</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.total_price)
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Remark</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.remark)
+                    </div>
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Item Name</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.item_name)
+            <!-- Category Information Section -->
+            <div class="col-md-6">
+                <h4 class="text-primary">Category Information</h4>
+                <hr />
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Category</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.category_tbl.cat_name)
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Quantity</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.item_qty)
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Sub Category</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.sub_category_tbl.subcat_name)
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Total Price</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.total_price)
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">User</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.user_tbl.user_name)
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Remark</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.remark)
+                <div class="row mb-3">
+                    <label class="col-sm-5 font-weight-bold">Date</label>
+                    <div class="col-sm-7">
+                        @Html.DisplayFor(model => model.sdate)
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <h4>Category Information</h4>
-            <hr />
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Category</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.category_tbl.cat_name)
-                </div>
+        <!-- Action Buttons -->
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.exp_id }, new { @class = "btn btn-primary mx-2" })
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary mx-2" })
             </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Sub Category</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.sub_category_tbl.subcat_name)
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">User</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.user_tbl.user_name)
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-4 font-weight-bold">Date</label>
-                <div class="col-sm-8">
-                    @Html.DisplayFor(model => model.sdate)
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-12">
-            @Html.ActionLink("Edit", "Edit", new { id = Model.exp_id }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ml-2" })
         </div>
     </div>
 </div>

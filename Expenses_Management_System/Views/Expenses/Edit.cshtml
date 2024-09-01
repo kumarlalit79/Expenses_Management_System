@@ -1,7 +1,7 @@
 ﻿@model Expenses_Management_System.Models.expenses_tbl
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Expense";
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
@@ -11,73 +11,62 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="container">
+    <div class="container mt-4 p-4 border rounded">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.exp_id)
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.created_on, "Select Category", htmlAttributes: new { @class = "col-form-label" })
-                    @Html.DropDownList("cat_id", (SelectList)ViewBag.CatMsg, "Select Category", new { @class = "form-control" })
-                </div>
+        <!-- Category and Subcategory Selection -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.category_tbl.cat_id, "Category", new { @class = "form-label font-weight-bold" })
+                @Html.DropDownList("cat_id", (SelectList)ViewBag.CatMsg, "Select Category", new { @class = "form-control" })
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.created_on, "Select Sub Category", htmlAttributes: new { @class = "col-form-label" })
-                    @Html.DropDownList("subcat_id", (SelectList)ViewBag.SubMsg, "Select Sub Category", new { @class = "form-control" })
-                </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.sub_category_tbl.subcat_id, "Sub Category", new { @class = "form-label font-weight-bold" })
+                @Html.DropDownList("subcat_id", (SelectList)ViewBag.SubMsg, "Select Sub Category", new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.created_on, "Sub Sub Category", htmlAttributes: new { @class = "col-form-label" })
-                    @Html.DropDownList("sub_sub_catId", (SelectList)ViewBag.SubSubMsg, "Select Sub Sub Category", new { @class = "form-control" })
-                </div>
+        <!-- Sub Sub Category and Item Name -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.created_on, "Sub Sub Category", new { @class = "form-label font-weight-bold" })
+                @Html.DropDownList("sub_sub_catId", (SelectList)ViewBag.SubSubMsg, "Select Sub Sub Category", new { @class = "form-control" })
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.item_name, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.EditorFor(model => model.item_name, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.item_name, "Item Name", new { @class = "form-label font-weight-bold" })
+                @Html.EditorFor(model => model.item_name, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.item_qty, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.EditorFor(model => model.item_qty, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+        <!-- Quantity and Total Price -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.item_qty, "Quantity", new { @class = "form-label font-weight-bold" })
+                @Html.EditorFor(model => model.item_qty, new { htmlAttributes = new { @class = "form-control" } })
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.total_price, "Total Price", new { @class = "form-label font-weight-bold" })
+                @Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.remark, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+        <!-- Remark and Date -->
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.remark, "Remark", new { @class = "form-label font-weight-bold" })
+                @Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control" } })
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.sdate, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.EditorFor(model => model.sdate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.sdate, "Date", new { @class = "form-label font-weight-bold" })
+                @Html.EditorFor(model => model.sdate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
             </div>
         </div>
 
-        <div class="form-group">
+        <!-- Action Buttons -->
+        <div class="form-group text-center">
             <button type="submit" class="btn btn-primary">Save</button>
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ml-2" })
         </div>
     </div>
 }
