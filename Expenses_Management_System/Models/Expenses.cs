@@ -13,7 +13,7 @@ namespace Expenses_Management_System.Models
         public string item_qty { get; set; }
         public string total_price { get; set; }
         public string remark { get; set; }
-        public System.DateTime sdate { get; set; }
+        public DateTime sdate { get; set; }
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }
         public string user_id { get; set; }
@@ -24,8 +24,13 @@ namespace Expenses_Management_System.Models
         public string subcat_name { get; set; }
         public string PaymentMode { get; set; }
         public string sub_sub_catName { get; set; }
+        public string sub_sub_catId { get; set; }
+
         public string docpath { get; set; }
-        
+
+        public int acid { get; set; }
+        public string bankname { get; set; }
+
 
     }
 }

@@ -17,22 +17,86 @@ namespace Expenses_Management_System.Controllers
         {
         }
         // GET: Expenses
-        public ActionResult Index()
+
+
+        public ActionResult Index(int? monthno)
         {
-            // Check if the user is authenticated
             if (Session["Type"] == null)
             {
                 return RedirectToAction("Index", "SignIn");
             }
+
             using (ExpensesEntities db = new ExpensesEntities())
             {
                 int id = int.Parse(Session["userid"].ToString());
-                var data = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.sub_sub_category_tbl).Include(i => i.user_tbl).Where(i => i.fkUserId == id).ToList();
-                //var data = db.expenses_tbl.Where(i => i.fkUserId==id).ToList();
-                return View(data);
-                
+
+                // Get all expenses for the user
+                var data = db.expenses_tbl.Include(i => i.category_tbl)
+                                          .Include(i => i.sub_category_tbl)
+                                          .Include(i => i.sub_sub_category_tbl)
+                                          .Include(i => i.user_tbl)
+                                          .Where(i => i.fkUserId == id);
+
+                // Filter data by month if a month is selected
+                if (monthno.HasValue)
+                {
+                    data = data.Where(i => i.sdate.Month == monthno.Value);
+                }
+
+                var expensesList = data.ToList();
+
+                // Create month dropdown
+                var distinctMonths = db.expenses_tbl.Where(e => e.fkUserId == id)
+                    .AsEnumerable()
+                    .Select(e => new
+                    {
+                        MonthNumber = e.sdate.ToString("MM"),
+                        MonthName = e.sdate.ToString("MMM")
+                    })
+                    .Distinct()
+                    .OrderByDescending(m => m.MonthNumber)
+                    .ToList();
+
+                List<MonthM> mm = new List<MonthM>();
+                foreach (var item in distinctMonths)
+                {
+                    mm.Add(new MonthM
+                    {
+                        monthno = int.Parse(item.MonthNumber),
+                        Monthname = item.MonthName
+                    });
+                }
+                ViewBag.Month = new SelectList(mm, "monthno", "Monthname", monthno);
+
+                if (Request.IsAjaxRequest())
+                {
+                    // Return the updated view data without partial view
+                    return View("Index", expensesList);
+                }
+
+                return View(expensesList);
             }
         }
+
+        public JsonResult GetLatestMonth()
+        {
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                int id = int.Parse(Session["userid"].ToString());
+
+                // Determine the latest month
+                var latestMonth = db.expenses_tbl
+                                     .Where(e => e.fkUserId == id)
+                                     .AsEnumerable()
+                                     .Select(e => e.sdate.Month)
+                                     .Distinct()
+                                     .OrderByDescending(m => m)
+                                     .FirstOrDefault();
+
+                return Json(latestMonth, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult Create()
         {
             List<category_tbl> CatMaster = new List<category_tbl>();
@@ -91,13 +155,13 @@ namespace Expenses_Management_System.Controllers
 
                 ViewBag.paym = new SelectList(paymode, "PM_id", "PaymentMode");
 
-                
-                    assbank.Add(new Assbank
-                    {
-                        acid = 0,
-                        bankname ="SelectBank",
-                    });
-                
+
+                assbank.Add(new Assbank
+                {
+                    acid = 0,
+                    bankname = "SelectBank",
+                });
+
 
                 ViewBag.bank = new SelectList(assbank, "acid", "bankname");
 
@@ -132,7 +196,7 @@ namespace Expenses_Management_System.Controllers
             }
         }
 
-        public JsonResult GetSubSubcat(int subcategoryid,int categoryid)
+        public JsonResult GetSubSubcat(int subcategoryid, int categoryid)
         {
             List<sub_sub_category_tbl> subcatmst = new List<sub_sub_category_tbl>();
             using (ExpensesEntities db = new ExpensesEntities())
@@ -140,7 +204,7 @@ namespace Expenses_Management_System.Controllers
                 //var allData = db.sub_category_tbl.Include(i => i.category_tbl).Where(i => i.fkcat_id == categoryid).ToList();
                 //return Json(new { categoryid });
 
-                var allData = db.sub_sub_category_tbl.Where(i => i.fkSubCatId == subcategoryid &&  i.fkCatId == categoryid).ToList();
+                var allData = db.sub_sub_category_tbl.Where(i => i.fkSubCatId == subcategoryid && i.fkCatId == categoryid).ToList();
 
                 foreach (var item in allData)
                 {
@@ -163,7 +227,7 @@ namespace Expenses_Management_System.Controllers
             List<Assbank> bankmst = new List<Assbank>();
             using (ExpensesEntities db = new ExpensesEntities())
             {
-               // var data = db.AssignCardToBank_tbl.Include(i => i.BankCard).Include(i => i.PaymentMode_tbl).ToList().Where(i => i.fkpaymodeid == paymodeid);
+                // var data = db.AssignCardToBank_tbl.Include(i => i.BankCard).Include(i => i.PaymentMode_tbl).ToList().Where(i => i.fkpaymodeid == paymodeid);
                 var data = db.AssignCardToBank_tbl
            .Include(i => i.BankCard) // Ensure this matches the actual navigation property name
            .Include(i => i.PaymentMode_tbl) // Ensure this matches the actual navigation property name
@@ -177,8 +241,8 @@ namespace Expenses_Management_System.Controllers
                 {
                     bankmst.Add(new Assbank
                     {
-                       
-        
+
+
                         acid = item.ACID,
                         bankname = item.BankCard?.CardName,
                     });
@@ -190,14 +254,14 @@ namespace Expenses_Management_System.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(int cat_id, int subcat_id, string monthly_income, string item_name, string item_qty, string total_price, string remark , string user_name,int sub_sub_catId,int acid, DateTime sdate, HttpPostedFileBase ImageFile)
+        public ActionResult Create(int cat_id, int subcat_id, string monthly_income, string item_name, string item_qty, string total_price, string remark, string user_name, int sub_sub_catId, int acid, DateTime sdate, HttpPostedFileBase ImageFile)
         {
             using (ExpensesEntities db = new ExpensesEntities())
             {
                 try
                 {
-                    var details = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Where(c => c.fkCatId == cat_id &&  
-                           c.fkSubCatId == subcat_id &&  
+                    var details = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Where(c => c.fkCatId == cat_id &&
+                           c.fkSubCatId == subcat_id &&
                             c.sub_sub_catId == sub_sub_catId).ToList();
                     var path = "";
                     var newfilename = "";
@@ -205,7 +269,7 @@ namespace Expenses_Management_System.Controllers
                     {
                         // Generate a unique filename
                         var fileName = Path.GetFileName(ImageFile.FileName);
-                       
+
                         //foreach (var item in details)
                         //{
                         //    newfilename = item.category_tbl?.cat_name +" "+item.sub_category_tbl?.subcat_name+" "+item.sub_sub_catName+ fileName+sdate;
@@ -221,22 +285,22 @@ namespace Expenses_Management_System.Controllers
                         string timestamp = $"{datePart}_{timePart}";
 
                         // Create a valid file path
-                         newfilename = $"{Session["Mobile"].ToString()}_{timestamp}_{fileName}";
+                        newfilename = $"{Session["Mobile"].ToString()}_{timestamp}_{fileName}";
 
-                      //  newfilename = Session["Mobile"].ToString() + "_" + dateTimeString + "_" + fileName;
+                        //  newfilename = Session["Mobile"].ToString() + "_" + dateTimeString + "_" + fileName;
                         path = Path.Combine(Server.MapPath("~/Upload_Img"), newfilename);
 
                         // Save the file to the server
                         ImageFile.SaveAs(path);
                     }
 
-                        expenses_tbl e = new expenses_tbl();
+                    expenses_tbl e = new expenses_tbl();
                     e.created_on = DateTime.Now;
                     e.created_by = "gaj";
-                    e.fkCatId  = cat_id;
+                    e.fkCatId = cat_id;
                     e.fkSubCatId = subcat_id;
                     e.fkUserId = int.Parse(Session["userid"].ToString());
-                   // e.monthly_income = monthly_income;
+                    // e.monthly_income = monthly_income;
                     e.item_name = item_name;
                     e.item_qty = item_qty;
                     e.total_price = total_price;
@@ -244,7 +308,7 @@ namespace Expenses_Management_System.Controllers
                     //e.user_name = user_name;
                     e.fkSubSubCatId = sub_sub_catId;
                     e.FKACID = acid;
-                    e.sdate= sdate;
+                    e.sdate = sdate;
                     e.docpath = Path.Combine("~/Upload_Img", newfilename); ;
                     db.expenses_tbl.Add(e);
                     int a = db.SaveChanges();
@@ -270,69 +334,246 @@ namespace Expenses_Management_System.Controllers
             }
         }
 
+
+
+        //public ActionResult Edit(int id)
+        //{
+        //    List<category_tbl> CatMaster = new List<category_tbl>();
+        //    List<sub_category_tbl> SubMaster = new List<sub_category_tbl>();
+        //    List<sub_sub_category_tbl> SubSubMaster = new List<sub_sub_category_tbl>();
+        //    List<PaymentMode_tbl> paymode = new List<PaymentMode_tbl>();
+        //    List<Assbank> assbank = new List<Assbank>();
+        //    using (ExpensesEntities db = new ExpensesEntities())
+        //    {
+        //        var CatData = db.category_tbl.ToList();
+        //        foreach (var item in CatData)
+        //        {
+        //            CatMaster.Add(new category_tbl
+        //            {
+        //                cat_id = int.Parse(item.cat_id.ToString()),
+        //                cat_name = item.cat_name.ToString(),
+        //            });
+        //        };
+        //        ViewBag.CatMsg = new SelectList(CatMaster, "cat_id", "cat_name");
+
+
+
+
+        //        var SubCat = db.sub_category_tbl.ToList();
+        //        foreach (var item in SubCat)
+        //        {
+        //            SubMaster.Add(new sub_category_tbl
+        //            {
+        //                subcat_id = int.Parse(item.subcat_id.ToString()),
+        //                subcat_name = item.subcat_name.ToString(),
+        //            });
+        //        };
+
+        //        ViewBag.SubMsg = new SelectList(SubCat, "subcat_id", "subcat_name");
+
+
+
+        //        var SubSubData = db.sub_sub_category_tbl.ToList();
+        //        foreach (var item in SubSubData)
+        //        {
+        //            SubSubMaster.Add(new sub_sub_category_tbl
+        //            {
+        //                sub_sub_catId = int.Parse(item.sub_sub_catId.ToString()),
+        //                sub_sub_catName = item.sub_sub_catName.ToString(),
+        //            });
+        //        }
+        //        ViewBag.SubSubMsg = new SelectList(SubSubMaster, "sub_sub_catId", "sub_sub_catName");
+
+        //        var paym = db.PaymentMode_tbl.ToList();
+        //        foreach (var item in paym)
+        //        {
+        //            paymode.Add(new PaymentMode_tbl
+        //            {
+        //                PM_id = int.Parse(item.PM_id.ToString()),
+        //                PaymentMode = item.PaymentMode.ToString(),
+        //            });
+        //        };
+
+        //        ViewBag.paym = new SelectList(paymode, "PM_id", "PaymentMode");
+
+        //        assbank.Add(new Assbank
+        //        {
+        //            acid = 0,
+        //            bankname = "SelectBank",
+        //        });
+
+
+        //        ViewBag.bank = new SelectList(assbank, "acid", "bankname");
+
+        //        var ExpenseId = db.expenses_tbl.Find(id);
+        //        if (ExpenseId == null)
+        //        {
+        //            TempData["ErrorMsg"] = "<script>alert('Expense Id not found')</script>";
+
+        //        }
+
+
+        //        return View(ExpenseId);
+
+
+        //    }
+        //}
+
         public ActionResult Edit(int id)
         {
-            List<category_tbl> CatMaster = new List<category_tbl>();
-            List<sub_category_tbl> SubMaster = new List<sub_category_tbl>();
-            List<sub_sub_category_tbl> SubSubMaster = new List<sub_sub_category_tbl>();
             using (ExpensesEntities db = new ExpensesEntities())
             {
+                // Fetching categories
                 var CatData = db.category_tbl.ToList();
-                foreach (var item in CatData)
-                {
-                    CatMaster.Add(new category_tbl
-                    {
-                        cat_id = int.Parse(item.cat_id.ToString()),
-                        cat_name = item.cat_name.ToString(),
-                    });
-                };
-                ViewBag.CatMsg = new SelectList(CatMaster, "cat_id", "cat_name");
+                ViewBag.CatMsg = new SelectList(CatData, "cat_id", "cat_name");
 
-                
-
-
+                // Fetching subcategories
                 var SubCat = db.sub_category_tbl.ToList();
-                foreach (var item in SubCat)
-                {
-                    SubMaster.Add(new sub_category_tbl
-                    {
-                        subcat_id = int.Parse(item.subcat_id.ToString()),
-                        subcat_name = item.subcat_name.ToString(),
-                    });
-                };
-
                 ViewBag.SubMsg = new SelectList(SubCat, "subcat_id", "subcat_name");
 
-                
-
+                // Fetching sub-subcategories
                 var SubSubData = db.sub_sub_category_tbl.ToList();
-                foreach (var item in SubSubData)
+                ViewBag.SubSubMsg = new SelectList(SubSubData, "sub_sub_catId", "sub_sub_catName");
+
+                // Fetching payment modes
+                List<PaymentMode_tbl> paymode = new List<PaymentMode_tbl>();
+                var paym = db.PaymentMode_tbl.ToList();
+                foreach (var item in paym)
                 {
-                    SubSubMaster.Add(new sub_sub_category_tbl
+                    paymode.Add(new PaymentMode_tbl
                     {
-                        sub_sub_catId = int.Parse(item.sub_sub_catId.ToString()),
-                        sub_sub_catName = item.sub_sub_catName.ToString(),
+                        PM_id = item.PM_id,
+                        PaymentMode = item.PaymentMode
                     });
                 }
-                ViewBag.SubSubMsg = new SelectList(SubSubMaster, "sub_sub_catId", "sub_sub_catName");
+                ViewBag.paym = new SelectList(paymode, "PM_id", "PaymentMode");
 
-                
 
+
+                var assbank = new List<Assbank>
+                {
+                    new Assbank { acid = 0, bankname = "SelectBank" }
+                };
+                ViewBag.bank = new SelectList(assbank, "acid", "bankname");
+
+
+
+
+                // Fetch the expense record from database
                 var ExpenseId = db.expenses_tbl.Find(id);
-                if(ExpenseId == null)
+                if (ExpenseId == null)
                 {
                     TempData["ErrorMsg"] = "<script>alert('Expense Id not found')</script>";
-                    
+                    return RedirectToAction("Index");
                 }
-                var expenseViewModel = new expenses_tbl
+
+                // Map expenses_tbl to Expenses ViewModel
+                var expenseViewModel = new Expenses
                 {
                     exp_id = ExpenseId.exp_id,
-
+                    item_name = ExpenseId.item_name,
+                    item_qty = ExpenseId.item_qty,
+                    total_price = ExpenseId.total_price,
+                    remark = ExpenseId.remark,
+                    sdate = ExpenseId.sdate,
+                    created_on = ExpenseId.created_on,
+                    cat_id = ExpenseId.fkCatId.HasValue ? ExpenseId.fkCatId.Value : 0,
+                    subcat_id = ExpenseId.fkSubCatId.HasValue ? ExpenseId.fkSubCatId.Value : 0,
+                    sub_sub_catId = ExpenseId.fkSubSubCatId.HasValue ? ExpenseId.fkSubSubCatId.Value.ToString() : "0",
+                    //PaymentMode = ExpenseId.FKACID.HasValue ? ExpenseId.FKACID.ToString() : string.Empty,
+                    PaymentMode = ExpenseId.FKACID.HasValue ? ExpenseId.FKACID.ToString() : string.Empty, // This line
                 };
-                
-                return View(ExpenseId);
+
+                if (ExpenseId.FKACID.HasValue)
+                {
+                    var banks = db.AssignCardToBank_tbl
+                                .Include(i => i.BankCard)
+                                .Where(i => i.fkpaymodeid == ExpenseId.FKACID.Value)
+                                .Select(item => new Assbank
+                                {
+                                    acid = item.ACID,
+                                    bankname = item.BankCard.CardName,
+                                })
+                                .ToList();
+
+                    ViewBag.bank = new SelectList(banks, "acid", "bankname", ExpenseId.FKACID.Value);
+                }
+                else
+                {
+                    ViewBag.bank = new SelectList(new List<Assbank>(), "acid", "bankname");
+                }
+
+                return View(expenseViewModel);
+            }
+        }
 
 
+        public JsonResult GetSubcatEdit(int categoryid)
+        {
+            List<sub_category_tbl> subcatmst = new List<sub_category_tbl>();
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                var allData = db.sub_category_tbl
+                          .Where(i => i.fkcat_id == categoryid)
+                          .ToList();
+
+                foreach (var item in allData)
+                {
+                    subcatmst.Add(new sub_category_tbl
+                    {
+                        subcat_id = item.subcat_id,
+                        subcat_name = item.subcat_name,
+                    });
+
+                }
+
+                // Return the subcategories as JSON
+                return Json(subcatmst, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSubSubcatEdit(int subcategoryid, int categoryid)
+        {
+            List<sub_sub_category_tbl> subcatmst = new List<sub_sub_category_tbl>();
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                //var allData = db.sub_category_tbl.Include(i => i.category_tbl).Where(i => i.fkcat_id == categoryid).ToList();
+                //return Json(new { categoryid });
+
+                var allData = db.sub_sub_category_tbl.Where(i => i.fkSubCatId == subcategoryid && i.fkCatId == categoryid).ToList();
+
+                foreach (var item in allData)
+                {
+                    subcatmst.Add(new sub_sub_category_tbl
+                    {
+                        sub_sub_catId = item.sub_sub_catId,
+                        sub_sub_catName = item.sub_sub_catName,
+                    });
+
+                }
+
+                // Return the subcategories as JSON
+                return Json(subcatmst, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetBankEdit(int paymodeid)
+        {
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                var data = db.AssignCardToBank_tbl
+                             .Include(i => i.BankCard)
+                             .Include(i => i.PaymentMode_tbl)
+                             .Where(i => i.fkpaymodeid == paymodeid)
+                             .ToList();
+
+                var bankmst = data.Select(item => new Assbank
+                {
+                    acid = item.ACID,
+                    bankname = item.BankCard?.CardName,
+                }).ToList();
+
+                return Json(bankmst, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -349,7 +590,7 @@ namespace Expenses_Management_System.Controllers
                     return RedirectToAction("Index", "Expenses");
                 }
 
-              //  existingExpensesData.monthly_income = expensesData.monthly_income;
+                //  existingExpensesData.monthly_income = expensesData.monthly_income;
                 existingExpensesData.item_name = expensesData.item_name;
                 existingExpensesData.item_qty = expensesData.item_qty;
                 existingExpensesData.total_price = expensesData.total_price;
@@ -357,7 +598,7 @@ namespace Expenses_Management_System.Controllers
                 existingExpensesData.created_by = "Gaj";
                 existingExpensesData.created_on = DateTime.Now;
                 existingExpensesData.fkCatId = 1;
-                
+
 
                 //db.Entry(expensesData).State = EntityState.Modified;
                 try
@@ -366,7 +607,7 @@ namespace Expenses_Management_System.Controllers
                     TempData["UpdateSubMsg"] = "<script>alert('Sub-Sub-Category updated successfully')</script>";
                     return RedirectToAction("Index", "Expenses");
                 }
-                
+
                 catch (Exception ex)
                 {
                     TempData["UpdateSubMsg"] = $"<script>alert('Error: {ex.Message}')</script>";
@@ -377,29 +618,24 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Details(int id)
         {
-            using(ExpensesEntities db = new ExpensesEntities())
+            using (ExpensesEntities db = new ExpensesEntities())
             {
-                
+
                 var details = db.expenses_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Include(i => i.user_tbl).Where(model => model.exp_id == id).FirstOrDefault();
                 return View(details);
             }
         }
 
-        
+
         public ActionResult Delete(int id)
         {
-            using(ExpensesEntities db = new ExpensesEntities())
+            using (ExpensesEntities db = new ExpensesEntities())
             {
-                if(id > 0)
-                {
-                    var expId = db.expenses_tbl.Where(x => x.exp_id == id).FirstOrDefault();
-                    if(expId != null)
-                    {
-                        db.Entry(expId).State = EntityState.Deleted;
-                        db.SaveChanges();
-                    }
-                }
-                return View(id);
+                var expId = db.expenses_tbl.Where(x => x.exp_id == id).FirstOrDefault();
+                db.expenses_tbl.Remove(expId);
+                db.Entry(expId).State = EntityState.Deleted;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
         }
     }

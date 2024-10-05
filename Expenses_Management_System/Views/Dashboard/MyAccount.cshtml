@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Expenses_Management_System.Models.user_tbl>
+
+@{
+    ViewBag.Title = "MyAccount";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Account Details</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Address")
+        </th>
+        <th>
+            @Html.DisplayName("City")
+        </th>
+        <th>
+            @Html.DisplayName("Statename")
+        </th>
+        <th>
+            @Html.DisplayName("Pincode")
+        </th>
+        <th>
+            @Html.DisplayName("Mobile No.")
+        </th>
+        <th>
+            @Html.DisplayName("Email Id")
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>*@
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.statename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pincode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mobile_num)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email_id)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "MyAccountEditPage",new { id=item.user_id }) 
+            @*@Html.ActionLink("Details", "Details", new { id=item.user_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.user_id })*@
+        </td>
+    </tr>
+}
+
+</table>

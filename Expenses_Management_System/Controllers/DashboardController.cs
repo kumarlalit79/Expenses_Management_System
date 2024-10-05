@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Text;
 using OfficeOpenXml;
 using Newtonsoft.Json;
+using System.Deployment.Internal;
 
 namespace Expenses_Management_System.Controllers
 {
@@ -328,18 +329,6 @@ namespace Expenses_Management_System.Controllers
             {
                 int id = int.Parse(Session["userid"].ToString());
 
-                //int monthnumber = 8;
-                //if (string.IsNullOrEmpty(currentmonth))
-                //{
-                //    monthnumber = 8;
-                //}
-                //else
-                //{
-                //    monthnumber = int.Parse(currentmonth);
-
-
-                //}
-
                 List<Expenses> exp = new List<Expenses>();
                 var rawData = db.expenses_tbl
                  .Include(e => e.category_tbl)
@@ -631,6 +620,48 @@ namespace Expenses_Management_System.Controllers
             }
         }
 
-        
+
+        public ActionResult MyAccount()
+        {
+            int id = int.Parse(Session["userid"].ToString());
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                var userData = db.user_tbl
+                    .Where(x => x.user_id == id)
+                    .ToList();
+                return View(userData);
+            }
+        }
+
+        public ActionResult MyAccountEditPage(int id)
+        {
+            //int id = int.Parse(Session["userid"].ToString());
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                var editUser = db.user_tbl.Where(x => x.user_id == id).FirstOrDefault();
+
+                return View(editUser);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult MyAccountEdit(user_tbl u)
+        {
+            //int id = int.Parse(Session["userid"].ToString());
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                var editUser = db.user_tbl.Where(x => x.user_id == u.user_id).FirstOrDefault();
+                editUser.user_name = u.user_name;
+                editUser.address = u.address;
+                editUser.city = u.city;
+                editUser.statename = u.statename;
+                editUser.pincode = u.pincode;
+                editUser.mobile_num = u.mobile_num;
+                editUser.email_id = u.email_id;
+                db.Entry(editUser).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("MyAccount", "Dashboard");
+            }
+        }
     }
 }

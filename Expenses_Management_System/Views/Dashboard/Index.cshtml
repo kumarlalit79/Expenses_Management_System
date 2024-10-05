@@ -31,40 +31,11 @@
                 </div>
             </div>
         </div>
-        <!--<div class="card-body">
-        <form>
-
-            <div class="row gx-3 mb-3">-->
-        <!-- Form Group (first name)-->
-        <!--<div class="col-md-6">
-            <label class="small mb-1" for="inputFirstName">Name</label>
-            <asp:label id="lblName" class="form-control" runat="server">Gajendra Kumar</asp:label>
-        </div>-->
-        <!-- Form Group (last name)-->
-        <!--<div class="col-md-6">
-                <label class="small mb-1" for="inputLastName">Type</label>
-                <asp:label id="lblMeter" class="form-control" runat="server">Home</asp:label>
-            </div>
-        </div>-->
-        <!-- Form Row        -->
-        <!--<div class="row gx-3 mb-3">-->
-        <!-- Form Group (organization name)-->
-        <!--<div class="col-md-6">
-            <label class="small mb-1" for="inputOrgName">Mobile Number</label>
-            <asp:label id="lblMob" class="form-control" runat="server">9971****12</asp:label>
-        </div>-->
-        <!-- Form Group (location)-->
-        <!--<div class="col-md-6">
-                        <label class="small mb-1" for="inputEmailAddress">Account Number</label>
-                        <asp:label id="lblAccount" class="form-control" runat="server">12343212</asp:label>
-                    </div>
-                </div>
-            </form>
-        </div>-->
+        
 
         <div class="row">
             <div class="col-md-6 col-xl-6" style="overflow-y: scroll; height:410px;">
-                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.3em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Category-Wise Spending,Aug-2024</text></div>
+                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.3em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Category-Wise Spending</text></div>
                 <br />
                 <table class="table table-bordered red-border text-center">
                     <thead>
@@ -245,7 +216,7 @@
             </div>
 
             <div class="col-md-6 col-xl-6">
-                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.2em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">Payment Mode Wise Spending,Aug-2024</text></div>
+                <div><text x="10" class="highcharts-title" data-z-index="4" y="25" aria-hidden="true" style="font-size: 1.2em; color: rgb(51, 51, 51); font-weight: bold; fill: rgb(51, 51, 51);">Payment Mode Wise Spending</text></div>
                 <br />
                 <table class="table table-bordered red-border text-center">
                     <thead>
@@ -288,8 +259,7 @@
 
             $('#ddlMonth').change(function () {
                 var catid = $(this).val();
-                /*var m_no = $(ddlMonth).val();*/
-               // alert(catid);
+                
                 bindColumnChart(catid);
                 bindPaiChart(catid);
                 bindDrilldown(catid);

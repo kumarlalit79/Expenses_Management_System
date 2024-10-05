@@ -10,7 +10,50 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-bordered red-border text-center">
+
+
+<div class="col-md-4 ">
+    <label for="Month">Select Month:</label> 
+    @Html.DropDownList("monthno", (SelectList)ViewBag.Month, new { @class = "form-control mb-3", @id = "ddlMonth" })
+</div>
+
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Set the default value of the dropdown to the latest month
+        $.ajax({
+            url: '@Url.Action("GetLatestMonth", "Expenses")',
+            type: 'GET',
+            success: function (latestMonth) {
+                $('#ddlMonth').val(latestMonth);
+
+                // Trigger change event to load data for the latest month
+                $('#ddlMonth').trigger('change');
+            },
+            error: function () {
+                alert('Failed to retrieve latest month.');
+            }
+        });
+
+        $('#ddlMonth').change(function () {
+            var selectedMonth = $(this).val();
+
+            $.ajax({
+                url: '@Url.Action("Index", "Expenses")',
+                type: 'GET',
+                data: { monthno: selectedMonth },
+                success: function (result) {
+                    $('#expensesTable tbody').html($(result).find('#expensesTable tbody').html());
+                },
+                error: function () {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        });
+    });
+</script>
+<table class="table table-bordered red-border text-center" id="expensesTable">
     <thead>
         <tr>
             <th>#</th>
@@ -25,56 +68,43 @@
         </tr>
     </thead>
     @{
-        // Initialize the counter variable
+
         int itemCount = 0;
         foreach (var item in Model)
         {
             itemCount++;
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => itemCount)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => itemCount)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.sub_sub_category_tbl.sub_sub_catName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.item_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.item_qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_price)
-            </td>
-            @*<td>
-            @Html.DisplayFor(modelItem => item.remark)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sdate)
-        </td>*@
-            @*<td>
-            @Html.DisplayFor(modelItem => item.created_on)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.created_by)
-        </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
+                </td>
 
+                <td>
+                    @Html.DisplayFor(modelItem => item.sub_sub_category_tbl.sub_sub_catName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.item_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.item_qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total_price)
+                </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.exp_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.exp_id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.exp_id })
-            </td>
-        </tr>
-            }
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.exp_id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.exp_id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.exp_id })
+                </td>
+            </tr>
         }
+    }
 
-    </table>
+</table>
