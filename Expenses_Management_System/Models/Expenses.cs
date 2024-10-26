@@ -27,10 +27,15 @@ namespace Expenses_Management_System.Models
         public string sub_sub_catId { get; set; }
 
         public string docpath { get; set; }
+<<<<<<< HEAD
 
         public int acid { get; set; }
         public string bankname { get; set; }
 
 
+=======
+        
+        
+>>>>>>> master
     }
 }

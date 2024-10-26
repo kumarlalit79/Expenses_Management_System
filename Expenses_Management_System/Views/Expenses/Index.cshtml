@@ -55,7 +55,7 @@
 </script>
 <table class="table table-bordered red-border text-center" id="expensesTable">
     <thead>
-        <tr>
+    <tr>
             <th>#</th>
 
             <th>Category </th>
@@ -64,8 +64,8 @@
             <th>Item_Name </th>
             <th>Qty</th>
             <th>Price</th>
-            <th>Action</th>
-        </tr>
+        <th>Action</th>
+    </tr>
     </thead>
     @{
 
@@ -73,6 +73,7 @@
         foreach (var item in Model)
         {
             itemCount++;
+<<<<<<< HEAD
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => itemCount)
@@ -84,6 +85,44 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
                 </td>
+=======
+    <tr>
+        <td>
+                @Html.DisplayFor(modelItem => itemCount)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
+        </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.sub_sub_category_tbl.sub_sub_catName)
+            </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.item_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.item_qty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_price)
+        </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.remark)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sdate)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>*@
+>>>>>>> master
 
                 <td>
                     @Html.DisplayFor(modelItem => item.sub_sub_category_tbl.sub_sub_catName)
@@ -98,12 +137,22 @@
                     @Html.DisplayFor(modelItem => item.total_price)
                 </td>
 
+<<<<<<< HEAD
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.exp_id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.exp_id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.exp_id })
                 </td>
             </tr>
+=======
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.exp_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.exp_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.exp_id })
+        </td>
+    </tr>
+}
+>>>>>>> master
         }
     }
 

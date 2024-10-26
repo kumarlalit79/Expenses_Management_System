@@ -44,46 +44,24 @@ namespace Expenses_Management_System.Controllers
 
             string mobileSession = Session["Mobile"] as string;
             ViewBag.mobileNumData = mobileSession;
-
+            
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(user_tbl u)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 u.created_on = DateTime.Now;
                 u.created_by = "gaj";
-                u.type = "Normal";
-
-                db.user_tbl.Add(u);
                 int a = db.SaveChanges();
                 if (a > 0)
                 {
-                    var MobNum = db.user_tbl.Where(model => model.mobile_num == u.mobile_num).FirstOrDefault();
-                    if (MobNum == null)
-                    {
-                        Session["Mobile"] = u.mobile_num;
-                        // Session["Type"] = u.type;
-
-                        return RedirectToAction("Create", "User");
-                    }
-                    else
-                    {
-                       // string a = u.@type;
-                        Session["userid"] = MobNum.user_id;
-                        Session["Type"] = MobNum.type;
-                        Session["Mobile"] = MobNum.mobile_num;
-                        Session["Name"] = MobNum.user_name;
-                        return RedirectToAction("Index", "Dashboard");
-                    }
+                }
                 }
                 else
                 {
-                    //TempData["InsertMsg"] = "<script>alert('Failed Inserting')</script>";
                     ModelState.Clear();
-                    return RedirectToAction("Index", "Expenses");
                 }
 
             }
@@ -92,10 +70,7 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Edit(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
-                var Statelist = new List<string>()
-                {
                 "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
                 "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
                 "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
@@ -112,7 +87,6 @@ namespace Expenses_Management_System.Controllers
         [HttpPost]
         public ActionResult Edit(user_tbl u)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 db.Entry(u).State = EntityState.Modified;
                 int a = db.SaveChanges();
@@ -134,7 +108,6 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Details(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var ssCatId = db.user_tbl.Where(model => model.user_id == id).FirstOrDefault();
                 return View(ssCatId);
@@ -144,7 +117,6 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Delete(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 if (id > 0)
                 {
@@ -160,7 +132,6 @@ namespace Expenses_Management_System.Controllers
                         }
                         else
                         {
-                            TempData["DeleteMsg"] = "<script>alert('Failed Deleted')</script>";
 
                         }
                     }

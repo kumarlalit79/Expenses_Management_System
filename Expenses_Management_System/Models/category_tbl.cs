@@ -11,7 +11,9 @@ namespace Expenses_Management_System.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class category_tbl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,8 +24,12 @@ namespace Expenses_Management_System.Models
             this.sub_sub_category_tbl = new HashSet<sub_sub_category_tbl>();
             this.user_categories_tbl = new HashSet<user_categories_tbl>();
         }
-    
+
+        
+        [Display(Name = "Category Id")]
         public int cat_id { get; set; }
+
+        [Display(Name = "Category Name")]
         public string cat_name { get; set; }
         public Nullable<System.DateTime> created_on { get; set; }
         public string created_by { get; set; }

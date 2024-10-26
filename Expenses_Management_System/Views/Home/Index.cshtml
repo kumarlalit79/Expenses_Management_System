@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
+<<<<<<< HEAD
 <div id="category-section">
     <div id="user-selected-categories">
         <h3>Your Selected Categories:</h3>
@@ -34,6 +35,56 @@
         <a href="#" id="choose-more-categories-link">Select more categories</a>
     </div>
 
+=======
+<h2>Category Details</h2>
+
+@Html.Raw(TempData["CreateCategory"])
+@Html.Raw(TempData["UpdateMsg"])
+@Html.Raw(TempData["DeleteMsg"])
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered red-border text-center">
+    <thead>
+    <tr>
+            <th>#</th>
+            <th>Category Name</th>
+
+        <th>Action</th>
+    </tr>
+    </thead>
+    
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cat_name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.created_on)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_by)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.cat_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.cat_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.cat_id })
+            </td>
+        </tr>
+            </tbody>
+    }
+
+</table>
+>>>>>>> master
 
     <div id="category-selection-container" style="display:none;">
         <!-- Categories will be loaded here via AJAX -->

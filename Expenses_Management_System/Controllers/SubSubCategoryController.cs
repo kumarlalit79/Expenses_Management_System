@@ -10,7 +10,6 @@ using System.Data;
 
 namespace Expenses_Management_System.Controllers
 {
-    public class SubSubCategoryController : BaseController
     {
         public SubSubCategoryController(MenuService menuService) : base(menuService)
         { 
@@ -19,8 +18,6 @@ namespace Expenses_Management_System.Controllers
         // GET: SubSubCategory
         public ActionResult Index()
         {
-            // Check if the user is authenticated
-            if (Session["Type"] == null)
             {
                 return RedirectToAction("Index", "SignIn");
             }
@@ -35,9 +32,10 @@ namespace Expenses_Management_System.Controllers
         public ActionResult Create()
         {
             List<category_tbl> catmst = new List<category_tbl>();
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var allData = db.category_tbl.ToList();
+
+
                 foreach (var item in allData)
                 {
                     catmst.Add(new category_tbl
@@ -74,7 +72,6 @@ namespace Expenses_Management_System.Controllers
         [HttpPost]
         public ActionResult Create(int cat_id , string subcat_name , int subcat_id , string sub_sub_catName)
         {
-            using(ExpensesEntities db = new ExpensesEntities())
             {
                 sub_sub_category_tbl ss = new sub_sub_category_tbl();
                 ss.created_on = DateTime.Now;
@@ -86,6 +83,7 @@ namespace Expenses_Management_System.Controllers
                 int a = db.SaveChanges();
                 if(a > 0)
                 {
+                    TempData["InsertMsg"] = "<script>alert('Inserted Successfully')</script>";
                     ModelState.Clear();
                     return RedirectToAction("Index", "SubSubCategory");
                 }
@@ -131,7 +129,6 @@ namespace Expenses_Management_System.Controllers
             List<category_tbl> catmst = new List<category_tbl>();
             List<sub_category_tbl> subcatmst = new List<sub_category_tbl>();
 
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var allData = db.category_tbl.ToList();
                 var catmstt = allData.Select(item => new category_tbl
@@ -198,7 +195,6 @@ namespace Expenses_Management_System.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (ExpensesEntities db = new ExpensesEntities())
                 {
                     var existingCat = db.sub_sub_category_tbl.Find(ss.sub_sub_catId);
                     if (existingCat == null)
@@ -218,7 +214,6 @@ namespace Expenses_Management_System.Controllers
                     try
                     {
                         db.SaveChanges();
-                        
                     }
                     catch (DBConcurrencyException)
                     {
@@ -239,7 +234,6 @@ namespace Expenses_Management_System.Controllers
         }
         public ActionResult Delete(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 if(id > 0)
                 {
@@ -250,7 +244,6 @@ namespace Expenses_Management_System.Controllers
                         int a = db.SaveChanges();
                         if (a > 0)
                         {
-                            
                             return RedirectToAction("Index" , "SubSubCategory");
                         }
                         else
@@ -266,10 +259,12 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Details(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
+<<<<<<< HEAD
                 var ssCatId = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).Where(model => model.sub_sub_catId == id).FirstOrDefault();
                 return View(ssCatId);
+=======
+>>>>>>> master
             }
 
         }
