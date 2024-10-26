@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExpensesnewModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExpensesnewModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssignCardToBank_tbl">
           <Key>
             <PropertyRef Name="ACID" />
@@ -94,6 +94,14 @@
           <Property Name="fkCatId" Type="int" />
           <Property Name="fkSubCatId" Type="int" />
         </EntityType>
+        <EntityType Name="user_categories_tbl">
+          <Key>
+            <PropertyRef Name="user_cat_id" />
+          </Key>
+          <Property Name="user_cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="int" Nullable="false" />
+          <Property Name="catId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="user_tbl">
           <Key>
             <PropertyRef Name="user_id" />
@@ -109,7 +117,34 @@
           <Property Name="created_on" Type="datetime" Nullable="false" />
           <Property Name="created_by" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="OTP" Type="varchar" MaxLength="50" />
+          <Property Name="OTP_created_on" Type="datetime" />
+          <Property Name="OTP_ends_on" Type="datetime" />
         </EntityType>
+        <Association Name="FK__user_cate__catId__17036CC0">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="1" />
+          <End Role="user_categories_tbl" Type="Self.user_categories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_catego__uid__160F4887">
+          <End Role="user_tbl" Type="Self.user_tbl" Multiplicity="1" />
+          <End Role="user_categories_tbl" Type="Self.user_categories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AssignCardToBank_tbl_BankCard">
           <End Role="BankCard" Type="Self.BankCard" Multiplicity="0..1" />
           <End Role="AssignCardToBank_tbl" Type="Self.AssignCardToBank_tbl" Multiplicity="*" />
@@ -251,7 +286,16 @@
           <EntitySet Name="PaymentMode_tbl" EntityType="Self.PaymentMode_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sub_category_tbl" EntityType="Self.sub_category_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sub_sub_category_tbl" EntityType="Self.sub_sub_category_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_categories_tbl" EntityType="Self.user_categories_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_tbl" EntityType="Self.user_tbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__user_cate__catId__17036CC0" Association="Self.FK__user_cate__catId__17036CC0">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_catego__uid__160F4887" Association="Self.FK__user_catego__uid__160F4887">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
+          </AssociationSet>
           <AssociationSet Name="FK_AssignCardToBank_tbl_BankCard" Association="Self.FK_AssignCardToBank_tbl_BankCard">
             <End Role="BankCard" EntitySet="BankCard" />
             <End Role="AssignCardToBank_tbl" EntitySet="AssignCardToBank_tbl" />
@@ -297,8 +341,7 @@
             <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExpensesnewModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -336,6 +379,7 @@
           <NavigationProperty Name="expenses_tbl" Relationship="Self.FK_expenses_tbl_expenses_tbl" FromRole="category_tbl" ToRole="expenses_tbl" />
           <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK_sub_category_tbl_sub_category_tbl" FromRole="category_tbl" ToRole="sub_category_tbl" />
           <NavigationProperty Name="sub_sub_category_tbl" Relationship="Self.FK_sub_sub_category_tbl_category_tbl" FromRole="category_tbl" ToRole="sub_sub_category_tbl" />
+          <NavigationProperty Name="user_categories_tbl" Relationship="ExpensesnewModel.FK__user_cate__catId__17036CC0" FromRole="category_tbl" ToRole="user_categories_tbl" />
         </EntityType>
         <EntityType Name="expenses_tbl">
           <Key>
@@ -428,6 +472,10 @@
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="expenses_tbl" Relationship="Self.FK_expenses_tbl_user_tbl" FromRole="user_tbl" ToRole="expenses_tbl" />
           <NavigationProperty Name="Monthly_Income_tbl" Relationship="Self.FK_Monthly_Income_tbl_user_tbl" FromRole="user_tbl" ToRole="Monthly_Income_tbl" />
+          <NavigationProperty Name="user_categories_tbl" Relationship="ExpensesnewModel.FK__user_catego__uid__160F4887" FromRole="user_tbl" ToRole="user_categories_tbl" />
+          <Property Name="OTP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OTP_created_on" Type="DateTime" Precision="3" />
+          <Property Name="OTP_ends_on" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_AssignCardToBank_tbl_BankCard">
           <End Role="BankCard" Type="Self.BankCard" Multiplicity="0..1" />
@@ -615,7 +663,50 @@
             <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
             <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
           </AssociationSet>
+          <EntitySet Name="user_categories_tbl" EntityType="ExpensesnewModel.user_categories_tbl" />
+          <AssociationSet Name="FK__user_cate__catId__17036CC0" Association="ExpensesnewModel.FK__user_cate__catId__17036CC0">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_catego__uid__160F4887" Association="ExpensesnewModel.FK__user_catego__uid__160F4887">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="user_categories_tbl">
+          <Key>
+            <PropertyRef Name="user_cat_id" />
+          </Key>
+          <Property Name="user_cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int32" Nullable="false" />
+          <Property Name="catId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="category_tbl" Relationship="ExpensesnewModel.FK__user_cate__catId__17036CC0" FromRole="user_categories_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="user_tbl" Relationship="ExpensesnewModel.FK__user_catego__uid__160F4887" FromRole="user_categories_tbl" ToRole="user_tbl" />
+        </EntityType>
+        <Association Name="FK__user_cate__catId__17036CC0">
+          <End Type="ExpensesnewModel.category_tbl" Role="category_tbl" Multiplicity="1" />
+          <End Type="ExpensesnewModel.user_categories_tbl" Role="user_categories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_catego__uid__160F4887">
+          <End Type="ExpensesnewModel.user_tbl" Role="user_tbl" Multiplicity="1" />
+          <End Type="ExpensesnewModel.user_categories_tbl" Role="user_categories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -722,6 +813,9 @@
           <EntitySetMapping Name="user_tbl">
             <EntityTypeMapping TypeName="ExpensesnewModel.user_tbl">
               <MappingFragment StoreEntitySet="user_tbl">
+                <ScalarProperty Name="OTP_ends_on" ColumnName="OTP_ends_on" />
+                <ScalarProperty Name="OTP_created_on" ColumnName="OTP_created_on" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="user_name" ColumnName="user_name" />
                 <ScalarProperty Name="address" ColumnName="address" />
@@ -733,6 +827,15 @@
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
                 <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_categories_tbl">
+            <EntityTypeMapping TypeName="ExpensesnewModel.user_categories_tbl">
+              <MappingFragment StoreEntitySet="user_categories_tbl">
+                <ScalarProperty Name="catId" ColumnName="catId" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="user_cat_id" ColumnName="user_cat_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

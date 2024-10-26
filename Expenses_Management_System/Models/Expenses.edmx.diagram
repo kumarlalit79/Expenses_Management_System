@@ -25,6 +25,9 @@
         <AssociationConnector Association="ExpensesnewModel.FK_expenses_tbl_user_tbl" ManuallyRouted="false" />
         <AssociationConnector Association="ExpensesnewModel.FK_Monthly_Income_tbl_user_tbl" ManuallyRouted="false" />
         <AssociationConnector Association="ExpensesnewModel.FK_sub_sub_category_tbl_sub_category_tbl" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ExpensesnewModel.user_categories_tbl" Width="1.5" PointX="8.25" PointY="4.5" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_cate__catId__17036CC0" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_catego__uid__160F4887" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

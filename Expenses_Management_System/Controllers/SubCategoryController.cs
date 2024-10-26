@@ -34,6 +34,29 @@ namespace Expenses_Management_System.Controllers
             
         }
 
+        //public ActionResult LoadSubCategories()
+        //{
+        //    using (ExpensesEntities db = new ExpensesEntities())
+        //    {
+        //        int userId = int.Parse(Session["userid"].ToString());
+
+
+        //        var allsubCategories = db.sub_category_tbl.ToList();
+
+
+        //        var selectedSubCategoryIds = db.user_categories_tbl
+        //                                   .Where(uc => uc.uid == userId)
+        //                                   .Select(uc => uc.catId)
+        //                                   .ToList();
+
+
+        //        ViewBag.SelectedCategoryIds = selectedCategoryIds;
+
+        //        return PartialView("_SubCategoriesPartial", allCategories);
+        //    }
+            
+        //}
+
         public ActionResult Create()
         {
             List<category_tbl> catmst= new List<category_tbl>();

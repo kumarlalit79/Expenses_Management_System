@@ -34,5 +34,6 @@ namespace Expenses_Management_System.Models
         public virtual DbSet<sub_category_tbl> sub_category_tbl { get; set; }
         public virtual DbSet<sub_sub_category_tbl> sub_sub_category_tbl { get; set; }
         public virtual DbSet<user_tbl> user_tbl { get; set; }
+        public virtual DbSet<user_categories_tbl> user_categories_tbl { get; set; }
     }
 }

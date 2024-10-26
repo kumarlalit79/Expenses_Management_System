@@ -17,9 +17,121 @@ namespace Expenses_Management_System.Controllers
         ExpensesEntities db = new ExpensesEntities();
         public ActionResult Index()
         {
-            var data = db.category_tbl.ToList();
-            return View(data);
+            int userId = int.Parse(Session["userid"].ToString());
+
+            var selectedCategories = db.category_tbl
+                               .Where(c => db.user_categories_tbl
+                                            .Any(uc => uc.uid == userId && uc.catId == c.cat_id))
+                               .ToList();
+
+            var unselectedCategories = db.category_tbl
+                                 .Where(c => !db.user_categories_tbl
+                                             .Any(uc => uc.uid == userId && uc.catId == c.cat_id))
+                                 .ToList();
+            if (selectedCategories.Any())
+            {
+                ViewBag.UserSelectedCategories = selectedCategories;
+                ViewBag.ShowMessage = false; 
+            }
+            else
+            {
+                
+                ViewBag.ShowMessage = true;
+            }
+
+            return View(unselectedCategories);
         }
+
+
+        public ActionResult LoadCategories()
+        {
+            int userId = int.Parse(Session["userid"].ToString());
+
+            
+            var allCategories = db.category_tbl.ToList();
+
+            
+            var selectedCategoryIds = db.user_categories_tbl
+                                       .Where(uc => uc.uid == userId)
+                                       .Select(uc => uc.catId)
+                                       .ToList();
+
+            
+            ViewBag.SelectedCategoryIds = selectedCategoryIds;
+
+            return PartialView("_CategoriesPartial", allCategories);
+        }
+
+        
+
+
+
+        [HttpPost]
+        public ActionResult SubmitCategories(List<int> categories)
+        {
+            try
+            {
+                
+                int userId = int.Parse(Session["userid"].ToString());
+
+                
+                var userExists = db.user_tbl.Any(u => u.user_id == userId);
+                if (!userExists)
+                {
+                    return Json(new { success = false, message = "Invalid user." });
+                }
+
+                
+                if (categories == null || !categories.Any())
+                {
+                    return Json(new { success = false, message = "No categories selected." });
+                }
+
+                
+                foreach (var catId in categories)
+                {
+                
+                    var categoryExists = db.category_tbl.Any(c => c.cat_id == catId);
+                    if (!categoryExists)
+                    {
+                        return Json(new { success = false, message = "Invalid category selection." });
+                    }
+
+                
+                    var userCategory = new user_categories_tbl
+                    {
+                        uid = userId,  // Set the user ID
+                        catId = catId  // Set the category ID
+                    };
+
+                    db.user_categories_tbl.Add(userCategory);
+                }
+
+                
+                db.SaveChanges();
+
+                
+                var selectedCategories = db.user_categories_tbl
+                    .Where(uc => uc.uid == userId)
+                    .Select(uc => new
+                    {
+                        uc.category_tbl.cat_id,
+                        uc.category_tbl.cat_name
+                    })
+                    .ToList();
+
+                
+                return Json(new { success = true, selectedCategories = selectedCategories });
+            }
+            catch (Exception ex)
+            {
+                
+                return Json(new { success = false, message = "Error: " + ex.Message });
+            }
+        }
+
+
+
 
         public ActionResult Create()
         {
