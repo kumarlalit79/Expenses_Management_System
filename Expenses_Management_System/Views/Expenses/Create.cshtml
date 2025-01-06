@@ -12,71 +12,98 @@
 @using (Html.BeginForm("Create", "Expenses", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Category")
                     @Html.DropDownList("cat_id", (SelectList)ViewBag.catMsg, "Select Category", htmlAttributes: new { @class = "form-control", @id = "ddlcategory" })
-                </div>
+            </div>
+        </div>*@
 
 
 
-                <div class="form-group">
+    <div class="form-group">
                     @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Sub-Sub Category")
                     @Html.DropDownList("sub_sub_catId", (SelectList)ViewBag.subsubCatMsg, "Select Sub Sub Category", htmlAttributes: new { @class = "form-control", @id = "ddlsubsubcategory" })
-                </div>
+        </div>
+    </div>
 
 
 
-                <div class="form-group">
+    <div class="form-group">
                     @Html.LabelFor(model => model.item_qty, htmlAttributes: new { @class = "control-label" }, labelText: "Qty")
                     @Html.EditorFor(model => model.item_qty, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+        </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Payment Mode")
                     @Html.DropDownList("PM_id", (SelectList)ViewBag.paym, "Select Payment Mode", htmlAttributes: new { @class = "form-control", @id = "ddlPaymode" })
-                </div>
+    </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.sdate, htmlAttributes: new { @class = "control-label" }, labelText: "Date")
                     @Html.EditorFor(model => model.sdate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                </div>
-                <div class="form-group">
+            </div>
+        </div>*@
+    <div class="form-group">
 
                     <input type="file" name="ImageFile" />
-                </div>
+        </div>
+    </div>
 
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" }, labelText: "Select Sub Category")
+        <div class="col-md-10">
+            @Html.DropDownList("subcat_id", (SelectList)ViewBag.subCatMsg, "Select Sub Category", htmlAttributes: new { @class = "form-control" })
+            @*@Html.ValidationMessageFor(model => model.fkCatId, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
 
             <div class="col-md-6">
-                <div class="form-group">
+    <div class="form-group">
                     @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label" }, labelText: "Sub Category")
                     @Html.DropDownList("subcat_id", (SelectList)ViewBag.subCatMsg, "Select Sub Category", htmlAttributes: new { @class = "form-control", @id = "ddlsubcategory" })
-                </div>
-                <div class="form-group">
+        </div>
+    </div>
+
+    <div class="form-group">
                     @Html.LabelFor(model => model.item_name, htmlAttributes: new { @class = "control-label" }, labelText: "Item Name")
-                    @Html.EditorFor(model => model.item_name, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <div class="form-group">
+            @Html.EditorFor(model => model.item_name, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(model => model.item_name, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+    <div class="form-group">
                     @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Price")
                     @Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+        </div>
+    </div>
 
 
-                <div class="form-group">
+    <div class="form-group">
                     @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "control-label" }, labelText: "Select Bank")
                     @Html.DropDownList("acid", (SelectList)ViewBag.bank, "Select Bank", htmlAttributes: new { @class = "form-control", @id = "ddlBank" })
-                </div>
-                <div class="form-group">
+        </div>
+    </div>
+
+    <div class="form-group">
                     @Html.LabelFor(model => model.remark, htmlAttributes: new { @class = "control-label" }, labelText: "Remark")
-                    @Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <div class="form-group">
+            @Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+    <div class="form-group">
                     <div class="text-left">
                         <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </div>
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.created_on, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_on, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.created_on, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -84,7 +111,7 @@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
-</div>
+            </div>
 
 
 
@@ -157,7 +184,7 @@
          });
      }
  })
-        }
+}
     </script>
 
 

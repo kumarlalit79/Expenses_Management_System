@@ -9,6 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<<<<<<< HEAD
 
 <div id="subcategory-section">
     <div id="user-selected-subcategories">
@@ -21,6 +22,7 @@
                     <th>Subcategory Name</th>
                 </tr>
             </thead>
+<<<<<<< HEAD
             <tbody>
                 @if (ViewBag.UserSelectedSubcategories != null)
                 {
@@ -36,6 +38,69 @@
                     }
                 }
             </tbody>
+=======
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.subcat_id)
+                    </td>
+=======
+<table class="table table-bordered red-border text-center">
+    <thead>
+    <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Sub Category Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.subcat_id)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.subcat_name)
+        </td>
+
+
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fkcat_id)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.subcat_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.subcat_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.subcat_id })
+        </td>
+    </tr>
+}
+>>>>>>> master
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.subcat_name)
+                    </td>
+
+                </tr>
+            }
+
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
         </table>
         <a href="#" id="choose-more-subcategories-link">Select more subcategories</a>
     </div>

@@ -5,10 +5,18 @@
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
+<<<<<<< HEAD
+=======
+<h2>Sub-Sub Category Details</h2>
+@Html.Raw(TempData["InsertMsg"])
+@Html.Raw(TempData["UpdateSubMsg"])
+@Html.Raw(TempData["DeleteMsg"])
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<<<<<<< HEAD
 
 <div id="subsubcategory-section">
     <div id="user-selected-subsubcategories">
@@ -41,12 +49,42 @@
         </table>
         <a href="#" id="choose-more-subsubcategories-link">Select more sub-subcategories</a>
     </div>
+=======
+<table class="table table-bordered red-border text-center">
+    <thead>
+    <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Sub Category Name</th>
+            <th>Sub Sub Category Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_sub_catId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_sub_catName)
+        </td>
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
 
     <div id="subsubcategory-selection-container" style="display:none;">
         <!-- Sub-Subcategories will be loaded here via AJAX -->
     </div>
 </div>
 
+<<<<<<< HEAD
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -54,6 +92,23 @@
             // Load sub-subcategories via AJAX when link is clicked
             $('#choose-more-subsubcategories-link').click(function (e) {
                 e.preventDefault();
+=======
+        @*<td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>*@
+        @*
+        *@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.sub_sub_catId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.sub_sub_catId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.sub_sub_catId })
+        </td>
+    </tr>
+}
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
 
                 $('#subsubcategory-selection-container').html('<p>Loading sub-subcategories...</p>');
 

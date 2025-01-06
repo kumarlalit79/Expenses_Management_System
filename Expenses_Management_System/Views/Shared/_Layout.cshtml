@@ -20,8 +20,8 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     @*<li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Category", "Create", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("SubCategory", "Index", "SubCategory", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Category", "Create", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("SubCategory", "Index", "SubCategory", new { area = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("Sub Sub Category", "Index", "SubSubCategory", new { area = "" }, new { @class = "nav-link" })</li>*@
                     @foreach (var item in ViewBag.MenuItems as List<MenuItem>)
                     {

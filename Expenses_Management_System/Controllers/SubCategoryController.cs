@@ -11,22 +11,17 @@ using Expenses_Management_System.Models;
 
 namespace Expenses_Management_System.Controllers
 {
-    public class SubCategoryController : BaseController
     {
-        public SubCategoryController(MenuService menuService) : base(menuService)
-        {
         }
+<<<<<<< HEAD
         ExpensesEntities db = new ExpensesEntities();
+=======
+        
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
 
         // GET: SubCategory
         public ActionResult Index()
         {
-            // Check if the user is authenticated
-            if (Session["Type"] == null)
-            {
-                return RedirectToAction("Index", "SignIn");
-            }
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 int userId = int.Parse(Session["userid"].ToString());
 
@@ -147,8 +142,12 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Create()
         {
+<<<<<<< HEAD
             List<category_tbl> catmst = new List<category_tbl>();
             using (ExpensesEntities db = new ExpensesEntities())
+=======
+            List<category_tbl> catmst= new List<category_tbl>();
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
             {
                 var allData = db.category_tbl.ToList();
 
@@ -171,7 +170,6 @@ namespace Expenses_Management_System.Controllers
         [HttpPost]
         public ActionResult Create(int cat_id, string subcat_name)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 sub_category_tbl s = new sub_category_tbl();
 
@@ -203,7 +201,6 @@ namespace Expenses_Management_System.Controllers
         public ActionResult Edit(int id)
         {
             List<category_tbl> catmst = new List<category_tbl>();
-            using (ExpensesEntities db = new ExpensesEntities())
             {
 
                 var allData = db.category_tbl.ToList();
@@ -242,7 +239,10 @@ namespace Expenses_Management_System.Controllers
         [HttpPost]
         public ActionResult Edit(Expenses_Management_System.Models.subcategory s)
         {
+<<<<<<< HEAD
             using (ExpensesEntities db = new ExpensesEntities())
+=======
+>>>>>>> 03f38ba69071c00deaa00ed70c8d638487cbd43e
             {
                 if (s.subcat_id == 0)
                 {
@@ -291,7 +291,6 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Delete(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var catId = db.sub_category_tbl.Where(modal => modal.subcat_id == id).FirstOrDefault();
                 if (catId != null)
@@ -317,7 +316,6 @@ namespace Expenses_Management_System.Controllers
 
         public ActionResult Details(int id)
         {
-            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var catId = db.sub_category_tbl.Include(i => i.category_tbl).Where(modal => modal.subcat_id == id).FirstOrDefault();
                 return View(catId);
