@@ -105,9 +105,15 @@ namespace Expenses_Management_System.Controllers
             List<PaymentMode_tbl> paymode = new List<PaymentMode_tbl>();
             List<Assbank> assbank = new List<Assbank>();
 
+            int userId = int.Parse(Session["userid"].ToString());
+
             using (ExpensesEntities db = new ExpensesEntities())
             {
-                var CatData = db.category_tbl.ToList();
+                //var CatData = db.category_tbl.ToList();
+                var CatData = db.category_tbl
+                        .Where(cat => db.user_subcategories_tbl
+                        .Any(uc => uc.user_tbl.user_id == userId && uc.catId == cat.cat_id))
+                        .ToList();
                 foreach (var item in CatData)
                 {
                     CatMaster.Add(new category_tbl
@@ -119,7 +125,11 @@ namespace Expenses_Management_System.Controllers
 
                 ViewBag.catMsg = new SelectList(CatMaster, "cat_id", "cat_name");
 
-                var SubCatData = db.sub_category_tbl.ToList();
+                //var SubCatData = db.sub_category_tbl.ToList();
+                var SubCatData = db.sub_category_tbl
+                           .Where(subcat => db.user_subcategories_tbl
+                           .Any(usc => usc.uid == userId && usc.subcatId == subcat.subcat_id))
+                           .ToList();
                 foreach (var item in SubCatData)
                 {
                     SubCatMaster.Add(new sub_category_tbl
@@ -131,7 +141,11 @@ namespace Expenses_Management_System.Controllers
 
                 ViewBag.subCatMsg = new SelectList(SubCatMaster, "subcat_id", "subcat_name");
 
-                var SubSubCatData = db.sub_sub_category_tbl.ToList();
+                //var SubSubCatData = db.sub_sub_category_tbl.ToList();
+                var SubSubCatData = db.sub_sub_category_tbl
+                              .Where(subsubcat => db.user_sub_subcategory_tbl
+                              .Any(ussc => ussc.uid == userId && ussc.subsubcatId == subsubcat.sub_sub_catId))
+                              .ToList();
                 foreach (var item in SubSubCatData)
                 {
                     SubSubCatMaster.Add(new sub_sub_category_tbl

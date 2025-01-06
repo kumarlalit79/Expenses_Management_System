@@ -222,6 +222,12 @@
     <Compile Include="Models\user_categories_tbl.cs">
       <DependentUpon>Expenses.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\user_subcategories_tbl.cs">
+      <DependentUpon>Expenses.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\user_sub_subcategory_tbl.cs">
+      <DependentUpon>Expenses.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\user_tbl.cs">
       <DependentUpon>Expenses.tt</DependentUpon>
     </Compile>
@@ -353,7 +359,8 @@
     <Content Include="Views\Dashboard\MyAccount.cshtml" />
     <Content Include="Views\Dashboard\MyAccountEditPage.cshtml" />
     <Content Include="Views\Home\_CategoriesPartial.cshtml" />
-    <Content Include="Views\SubCategory\_SubCategoriesPartial.cshtml" />
+    <Content Include="Views\SubCategory\_SubcategoriesPartial.cshtml" />
+    <Content Include="Views\SubSubCategory\_SubSubCategoriesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

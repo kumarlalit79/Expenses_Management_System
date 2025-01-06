@@ -1,0 +1,103 @@
+﻿@*@model IEnumerable<Expenses_Management_System.Models.sub_sub_category_tbl>
+
+    <div style="border: 1px solid #ccc; margin-top: 10px; padding: 10px;">
+        <h3>Select Sub-Subcategories</h3>
+        <form id="subsubcategories-form">
+            <ul style="list-style: none;">
+                @foreach (var subSubCategory in Model)
+                {
+                    bool isDisabled = ViewBag.SelectedSubSubcategoryIds != null && ViewBag.SelectedSubSubcategoryIds.Contains(subSubCategory.sub_sub_catId);
+                    <li>
+                        <input type="checkbox" name="selectedSubSubcategories" value="@subSubCategory.sub_sub_catId" @(isDisabled ? "disabled" : "") />
+                        @subSubCategory.sub_sub_catName (@subSubCategory.sub_category_tbl.subcat_name)
+                    </li>
+                }
+            </ul>
+        </form>
+        <button id="submit-subsubcategories" class="btn btn-primary">Save Sub-Subcategories</button>
+    </div>
+
+    @section Scripts {
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).on('click', '#submit-subsubcategories', function () {
+                var selectedSubSubcategories = [];
+                $('input[name="selectedSubSubcategories"]:checked:not(:disabled)').each(function () {
+                    selectedSubSubcategories.push($(this).val());
+                });
+
+                console.log('Selected Sub-Subcategories:', selectedSubSubcategories); // Log selected values
+
+                $.ajax({
+                    url: '@Url.Action("SubmitSubSubCategories", "SubSubCategory")',
+                    type: 'POST',
+                    data: { subSubcategories: selectedSubSubcategories },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Sub-Subcategories saved successfully!');
+                        } else {
+                            alert('Error saving sub-subcategories: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', status, error); // Log AJAX error
+                        alert('An error occurred while saving sub-subcategories.'); // Alert the user
+                    }
+                });
+            });
+        </script>
+    }*@
+
+
+@model IEnumerable<Expenses_Management_System.Models.sub_sub_category_tbl>
+
+<div style="border: 1px solid #ccc; margin-top: 10px; padding: 10px;">
+    <h3>Select Sub-Subcategories</h3>
+    <form id="subsubcategories-form">
+        <ul style="list-style: none;">
+            @foreach (var subSubCategory in Model)
+            {
+                bool isDisabled = ViewBag.SelectedSubSubcategoryIds != null && ViewBag.SelectedSubSubcategoryIds.Contains(subSubCategory.sub_sub_catId);
+                <li>
+                    <input type="checkbox" name="selectedSubSubcategories" value="@subSubCategory.sub_sub_catId" @(isDisabled ? "disabled" : "") />
+                    @subSubCategory.sub_sub_catName (@subSubCategory.sub_category_tbl.subcat_name)
+                </li>
+            }
+        </ul>
+    </form>
+    <button id="submit-subsubcategories" class="btn btn-primary">Save Sub-Subcategories</button>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#submit-subsubcategories").click(function (e) {
+            e.preventDefault();
+
+            var selectedSubSubcategories = [];
+            $("input[name='selectedSubSubcategories']:checked").each(function () {
+                selectedSubSubcategories.push(parseInt($(this).val()));
+            });
+
+            $.ajax({
+                url: '@Url.Action("SubmitSubSubCategories", "SubSubCategory")',
+                type: 'POST',
+                data: JSON.stringify({ subSubcategories: selectedSubSubcategories }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        alert("Sub-Subcategories saved successfully!");
+                        // Optional: Reload or navigate to another page
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while saving sub-subcategories.");
+                }
+            });
+        });
+    });
+</script>

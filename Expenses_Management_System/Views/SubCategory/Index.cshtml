@@ -1,121 +1,102 @@
 ﻿@model IEnumerable<Expenses_Management_System.Models.sub_category_tbl>
 
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Subcategory Selection";
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<h2>Sub Category Details</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<div id="category-section">
-    <div id="user-selected-categories">
-        <h3>Your Selected Sub-Categories:</h3>
-        <table class="table table-bordered red-border text-center">
+<div id="subcategory-section">
+    <div id="user-selected-subcategories">
+        <h3>Your Selected Subcategories:</h3>
+        <table class="table table-bordered text-center" id="selected-subcategory-table" border="1">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Category Name</th>
-                    <th>Sub Category Name</th>
-
+                    <th>Subcategory Name</th>
                 </tr>
             </thead>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.subcat_id)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.subcat_name)
-                    </td>
-
-                </tr>
-            }
-
+            <tbody>
+                @if (ViewBag.UserSelectedSubcategories != null)
+                {
+                    int i = 1;
+                    foreach (var subcategory in ViewBag.UserSelectedSubcategories)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@subcategory.category_tbl.cat_name</td>
+                            <td>@subcategory.subcat_name</td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
         </table>
-        <a href="#" id="choose-more-categories-link">Select more categories</a>
+        <a href="#" id="choose-more-subcategories-link">Select more subcategories</a>
     </div>
 
-    <div id="category-selection-container" style="display:none;">
-        <!-- Categories will be loaded here via AJAX -->
+    <div id="subcategory-selection-container" style="display:none;">
+        <!-- Subcategories will be loaded here via AJAX -->
     </div>
-
 </div>
 
-@section Scripts{
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript">
+@section Scripts {
+    <script>
         $(document).ready(function () {
-    // Load categories via AJAX when "Click here" or "Select more categories" link is clicked
-    $('#choose-category-link, #choose-more-categories-link').click(function (e) {
-        e.preventDefault(); // Prevent default action of the link
+            $('#choose-more-subcategories-link').click(function (e) {
+                e.preventDefault();
 
-        // Show loading spinner or message if needed (optional)
-        $('#category-selection-container').html('<p>Loading categories...</p>');
+                $('#subcategory-selection-container').html('<p>Loading subcategories...</p>');
 
-        // Load the partial view containing categories using AJAX
-        $.ajax({
-            url: '@Url.Action("LoadSubCategories", "Home")',
-            type: 'GET',
-            success: function (data) {
-                // Inject the loaded partial view into the container
-                $('#category-selection-container').html(data).show();
-                $('#no-category-message').hide();  // Hide the message for new users
-                $('#user-selected-categories').hide();  // Hide selected categories for existing users
-            },
-            error: function () {
-                alert('Error loading categories.');
-            }
+                $.ajax({
+                    url: '@Url.Action("LoadSubcategories", "SubCategory")',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#subcategory-selection-container').html(data).show();
+                        $('#user-selected-subcategories').hide();
+                    },
+                    error: function () {
+                        alert('Error loading subcategories.');
+                    }
+                });
+            });
+
+            $(document).on('click', '#submit-subcategories', function () {
+                var selectedSubcategories = [];
+                $('input[name="selectedSubcategories"]:checked').each(function () {
+                    selectedSubcategories.push($(this).val());
+                });
+
+                $.ajax({
+                    url: '@Url.Action("SubmitSubcategories", "SubCategory")',
+                    type: 'POST',
+                    data: { subcategories: selectedSubcategories },
+                    success: function (response) {
+                        if (response.success) {
+                            var updatedSubcategoriesHtml = '';
+                            $.each(response.selectedSubcategories, function (index, subcategory) {
+                                updatedSubcategoriesHtml += '<li>' + subcategory.subcat_name + '</li>';
+                            });
+
+                            $('#selected-subcategory-list').html(updatedSubcategoriesHtml);
+                            $('#user-selected-subcategories').show();
+                            $('#subcategory-selection-container').hide();
+
+                            alert('Subcategories saved successfully!');
+                        } else {
+                            alert('Error saving subcategories.');
+                        }
+                    },
+                    error: function () {
+                        alert('Error saving subcategories.');
+                    }
+                });
+            });
         });
-    });
-
-    // Handle form submission to save selected categories and update UI dynamically
-    $(document).on('click', '#submit-categories', function () {
-        // Get all selected categories
-        var selectedCategories = [];
-        $('input[name="selectedCategories"]:checked').each(function () {
-            selectedCategories.push($(this).val());
-        });
-
-        // Send selected categories to the server (via AJAX)
-        $.ajax({
-            url: '@Url.Action("SubmitCategories", "Home")',
-            type: 'POST',
-            data: { categories: selectedCategories },
-            success: function (response) {
-                if (response.success) {
-                    // Update the selected categories list dynamically after saving
-                    var updatedCategoriesHtml = '';
-                    $.each(response.selectedCategories, function (index, category) {
-                        updatedCategoriesHtml += '<li>' + category.cat_name + '</li>';
-                    });
-
-                    // Display updated categories in the UI
-                    $('#selected-category-list').html(updatedCategoriesHtml);
-                    $('#user-selected-categories').show(); // Show the updated category list
-                    $('#category-selection-container').hide(); // Hide the selection form
-
-                    alert('Categories saved successfully!');
-                } else {
-                    alert('Error saving categories.');
-                }
-            },
-            error: function () {
-                alert('Error saving categories.');
-            }
-        });
-    });
-});
     </script>
-
 }

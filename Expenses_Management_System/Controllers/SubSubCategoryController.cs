@@ -16,7 +16,75 @@ namespace Expenses_Management_System.Controllers
         { 
         
         }
+        ExpensesEntities db = new ExpensesEntities();
         // GET: SubSubCategory
+        //public ActionResult Index()
+        //{
+        //    // Check if the user is authenticated
+        //    if (Session["Type"] == null)
+        //    {
+        //        return RedirectToAction("Index", "SignIn");
+        //    }
+        //    using (ExpensesEntities db = new ExpensesEntities())
+        //    {
+        //        //var data = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).ToList();
+
+        //        int userId = int.Parse(Session["userid"].ToString());
+
+        //        // Selected Sub-Subcategories
+        //        var selectedSubSubcategories = db.sub_sub_category_tbl
+        //            .Where(ssc => db.user_sub_subcategory_tbl
+        //            .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+        //            .Include(ssc => ssc.sub_category_tbl)
+        //            .ToList();
+
+        //        // Unselected Sub-Subcategories
+        //        var unselectedSubSubcategories = db.sub_sub_category_tbl
+        //            .Where(ssc => !db.user_sub_subcategory_tbl
+        //            .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+        //            .Include(ssc => ssc.sub_category_tbl)
+        //            .ToList();
+
+        //        ViewBag.UserSelectedSubSubcategories = selectedSubSubcategories;
+
+        //        return View(unselectedSubSubcategories);
+
+        //    }
+
+        //    //return View();
+        //}
+
+        //public ActionResult Index()
+        //{
+        //    // Check if the user is authenticated
+        //    if (Session["Type"] == null)
+        //    {
+        //        return RedirectToAction("Index", "SignIn");
+        //    }
+
+        //    using (ExpensesEntities db = new ExpensesEntities())
+        //    {
+        //        int userId = int.Parse(Session["userid"].ToString());
+
+        //        // Selected Sub-Subcategories with eager loading for all required relationships
+        //        var selectedSubSubcategories = db.sub_sub_category_tbl
+        //            .Where(ssc => db.user_sub_subcategory_tbl
+        //            .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+        //            .Include(ssc => ssc.sub_category_tbl.category_tbl) // Include both subcategory and category tables
+        //            .ToList();
+
+        //        // Unselected Sub-Subcategories with eager loading
+        //        var unselectedSubSubcategories = db.sub_sub_category_tbl
+        //            .Where(ssc => !db.user_sub_subcategory_tbl
+        //            .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+        //            .Include(ssc => ssc.sub_category_tbl.category_tbl) // Include both subcategory and category tables
+        //            .ToList();
+
+        //        ViewBag.UserSelectedSubSubcategories = selectedSubSubcategories;
+
+        //        return View(unselectedSubSubcategories);
+        //    }
+        //}
         public ActionResult Index()
         {
             // Check if the user is authenticated
@@ -24,14 +92,181 @@ namespace Expenses_Management_System.Controllers
             {
                 return RedirectToAction("Index", "SignIn");
             }
+
             using (ExpensesEntities db = new ExpensesEntities())
             {
-                var data = db.sub_sub_category_tbl.Include(i => i.category_tbl).Include(i => i.sub_category_tbl).ToList();
-                return View(data);
-            }
+                db.Configuration.ProxyCreationEnabled = false; // Disable proxy creation
 
-            //return View();
+                int userId = int.Parse(Session["userid"].ToString());
+
+                // Selected Sub-Subcategories with eager loading
+                var selectedSubSubcategories = db.sub_sub_category_tbl
+                    .Where(ssc => db.user_sub_subcategory_tbl
+                    .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+                    .Include(ssc => ssc.sub_category_tbl.category_tbl) // Eager loading for relationships
+                    .ToList();
+
+                // Unselected Sub-Subcategories
+                var unselectedSubSubcategories = db.sub_sub_category_tbl
+                    .Where(ssc => !db.user_sub_subcategory_tbl
+                    .Any(usc => usc.user_tbl.user_id == userId && usc.sub_sub_category_tbl.sub_sub_catId == ssc.sub_sub_catId))
+                    .Include(ssc => ssc.sub_category_tbl.category_tbl) // Eager loading for relationships
+                    .ToList();
+
+                ViewBag.UserSelectedSubSubcategories = selectedSubSubcategories;
+
+                return View(unselectedSubSubcategories);
+            }
         }
+
+
+
+        public ActionResult LoadSubSubCategories()
+        {
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                int userId = int.Parse(Session["userid"].ToString());
+
+                //var allSubSubcategories = db.sub_sub_category_tbl.Include(ssc => ssc.sub_category_tbl).ToList();
+                //var selectedSubSubcategoryIds = db.user_sub_subcategory_tbl
+                //    .Where(usc => usc.user_tbl.user_id == userId)
+                //    .Select(usc => usc.subsubcatId)
+                //    .ToList();
+
+                //ViewBag.SelectedSubSubcategoryIds = selectedSubSubcategoryIds;
+
+                //return PartialView("_SubSubCategoriesPartial", allSubSubcategories);
+
+                var selectedSubcategoryIds = db.user_subcategories_tbl
+            .Where(usc => usc.uid == userId)
+            .Select(usc => usc.subcatId)
+            .ToList();
+
+                // Get all sub-subcategories that belong to the selected subcategories
+                var allSubSubcategories = db.sub_sub_category_tbl
+                    .Where(ssc => selectedSubcategoryIds.Contains(ssc.fkSubCatId)) // Filter by selected subcategories
+                    .Include(ssc => ssc.sub_category_tbl) // Include subcategory info
+                    .ToList();
+
+                var selectedSubSubcategoryIds = db.user_sub_subcategory_tbl
+                    .Where(usc => usc.user_tbl.user_id == userId)
+                    .Select(usc => usc.subsubcatId)
+                    .ToList();
+
+                ViewBag.SelectedSubSubcategoryIds = selectedSubSubcategoryIds;
+
+                return PartialView("_SubSubCategoriesPartial", allSubSubcategories);
+            }
+        }
+
+        [HttpPost]
+        
+        public ActionResult SubmitSubSubCategories(List<int> subSubcategories)
+        {
+            using (ExpensesEntities db = new ExpensesEntities())
+            {
+                try
+                {
+                    int userId = int.Parse(Session["userid"].ToString());
+
+                    if (subSubcategories == null || !subSubcategories.Any())
+                    {
+                        return Json(new { success = false, message = "No sub-subcategories selected." });
+                    }
+
+                    foreach (var subSubcatId in subSubcategories)
+                    {
+                        var subSubcategoryExists = db.sub_sub_category_tbl.Any(ssc => ssc.sub_sub_catId == subSubcatId);
+                        if (!subSubcategoryExists)
+                        {
+                            return Json(new { success = false, message = "Invalid sub-subcategory selection." });
+                        }
+
+                        if (!db.user_sub_subcategory_tbl.Any(usc => usc.uid == userId && usc.subsubcatId == subSubcatId))
+                        {
+                            var userSubSubcategory = new user_sub_subcategory_tbl
+                            {
+                                uid = userId,
+                                subsubcatId = subSubcatId,
+                                catId = db.sub_sub_category_tbl
+                                            .Where(ssc => ssc.sub_sub_catId == subSubcatId)
+                                            .Select(ssc => ssc.sub_category_tbl.fkcat_id)
+                                            .FirstOrDefault(),
+                                subcatId = db.sub_sub_category_tbl
+                                            .Where(ssc => ssc.sub_sub_catId == subSubcatId)
+                                            .Select(ssc => ssc.fkSubCatId)
+                                            .FirstOrDefault()
+                            };
+                            db.user_sub_subcategory_tbl.Add(userSubSubcategory);
+                        }
+                    }
+
+                    db.SaveChanges();
+
+                    return Json(new { success = true, message = "Sub-Subcategories saved successfully!" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "Error: " + ex.Message });
+                }
+            }
+        }
+
+        //public ActionResult SubmitSubSubCategories(List<int> subSubcategories)
+        //{
+        //    try
+        //    {
+        //        int userId = int.Parse(Session["userid"].ToString());
+
+        //        if (subSubcategories == null || !subSubcategories.Any())
+        //        {
+        //            return Json(new { success = false, message = "No sub-subcategories selected." });
+        //        }
+
+        //        foreach (var subSubcatId in subSubcategories)
+        //        {
+        //            var subSubcategoryExists = db.sub_sub_category_tbl.Any(ssc => ssc.sub_sub_catId == subSubcatId);
+        //            if (!subSubcategoryExists)
+        //            {
+        //                return Json(new { success = false, message = "Invalid sub-subcategory selection." });
+        //            }
+
+        //            var userSubSubcategory = new user_sub_subcategory_tbl
+        //            {
+        //                uid = userId,
+        //                subsubcatId = subSubcatId,
+        //                catId = db.sub_sub_category_tbl
+        //                            .Where(ssc => ssc.sub_sub_catId == subSubcatId)
+        //                            .Select(ssc => ssc.sub_category_tbl.fkcat_id)
+        //                            .FirstOrDefault(),
+        //                subcatId = db.sub_sub_category_tbl
+        //                            .Where(ssc => ssc.sub_sub_catId == subSubcatId)
+        //                            .Select(ssc => ssc.fkSubCatId)
+        //                            .FirstOrDefault()
+        //            };
+
+        //            db.user_sub_subcategory_tbl.Add(userSubSubcategory);
+        //        }
+
+        //        db.SaveChanges();
+
+        //        var selectedSubSubcategories = db.user_sub_subcategory_tbl
+        //            .Where(usc => usc.uid == userId)
+        //            .Select(usc => new
+        //            {
+        //                usc.sub_sub_category_tbl.sub_sub_catId,
+        //                usc.sub_sub_category_tbl.sub_sub_catName
+        //            })
+        //            .ToList();
+
+        //        return Json(new { success = true, selectedSubSubcategories = selectedSubSubcategories });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = "Error: " + ex.Message });
+        //    }
+        //}
+
         public ActionResult Create()
         {
             List<category_tbl> catmst = new List<category_tbl>();

@@ -16,7 +16,7 @@ namespace Expenses_Management_System.Controllers
         public SubCategoryController(MenuService menuService) : base(menuService)
         {
         }
-
+        ExpensesEntities db = new ExpensesEntities();
 
         // GET: SubCategory
         public ActionResult Index()
@@ -28,43 +28,131 @@ namespace Expenses_Management_System.Controllers
             }
             using (ExpensesEntities db = new ExpensesEntities())
             {
-                var allData = db.sub_category_tbl.Include(i => i.category_tbl).ToList();
-                return View(allData);
+                int userId = int.Parse(Session["userid"].ToString());
+
+                var selectedCategoryIds = db.user_categories_tbl
+                        .Where(uc => uc.uid == userId)
+                        .Select(uc => uc.catId)
+                        .ToList();
+
+                // Fetch selected subcategories that belong to the selected categories
+                var selectedSubcategories = db.sub_category_tbl
+                    .Where(sc => db.user_subcategories_tbl
+                        .Any(usc => usc.uid == userId && usc.subcatId == sc.subcat_id)
+                        && selectedCategoryIds.Contains(sc.fkcat_id)) // Filter by selected categories
+                    .Include(sc => sc.category_tbl)
+                    .ToList();
+
+                // Fetch unselected subcategories that belong to the selected categories
+                var unselectedSubcategories = db.sub_category_tbl
+                    .Where(sc => !db.user_subcategories_tbl
+                        .Any(usc => usc.uid == userId && usc.subcatId == sc.subcat_id)
+                        && selectedCategoryIds.Contains(sc.fkcat_id)) // Filter by selected categories
+                    .Include(sc => sc.category_tbl)
+                    .ToList();
+
+                // Store selected subcategories in ViewBag for future use (like checkboxes)
+                ViewBag.UserSelectedSubcategories = selectedSubcategories;
+
+                return View(unselectedSubcategories);
+
             }
-            
+
         }
 
-        //public ActionResult LoadSubCategories()
-        //{
-        //    using (ExpensesEntities db = new ExpensesEntities())
-        //    {
-        //        int userId = int.Parse(Session["userid"].ToString());
+        
 
 
-        //        var allsubCategories = db.sub_category_tbl.ToList();
+        public ActionResult LoadSubcategories()
+        {
+            int userId = int.Parse(Session["userid"].ToString());
+
+            // Fetch the IDs of the categories selected by the user
+            var selectedCategoryIds = db.user_categories_tbl
+                .Where(uc => uc.uid == userId)
+                .Select(uc => uc.catId)
+                .ToList();
+
+            // Fetch all subcategories that belong to the selected categories
+            var allSubcategories = db.sub_category_tbl
+                .Where(sc => selectedCategoryIds.Contains(sc.fkcat_id)) // Filter by selected categories
+                .Include(sc => sc.category_tbl)
+                .ToList();
+
+            var selectedSubcategoryIds = db.user_subcategories_tbl
+                .Where(usc => usc.uid == userId)
+                .Select(usc => usc.subcatId)
+                .ToList();
+
+            ViewBag.SelectedSubcategoryIds = selectedSubcategoryIds;
+
+            return PartialView("_SubcategoriesPartial", allSubcategories);
+        }
 
 
-        //        var selectedSubCategoryIds = db.user_categories_tbl
-        //                                   .Where(uc => uc.uid == userId)
-        //                                   .Select(uc => uc.catId)
-        //                                   .ToList();
+        [HttpPost]
+        public ActionResult SubmitSubcategories(List<int> subcategories)
+        {
+            try
+            {
+                int userId = int.Parse(Session["userid"].ToString());
 
+                if (subcategories == null || !subcategories.Any())
+                {
+                    return Json(new { success = false, message = "No subcategories selected." });
+                }
 
-        //        ViewBag.SelectedCategoryIds = selectedCategoryIds;
+                foreach (var subcatId in subcategories)
+                {
+                    var subcategoryExists = db.sub_category_tbl.Any(sc => sc.subcat_id == subcatId);
+                    if (!subcategoryExists)
+                    {
+                        return Json(new { success = false, message = "Invalid subcategory selection." });
+                    }
 
-        //        return PartialView("_SubCategoriesPartial", allCategories);
-        //    }
-            
-        //}
+                    var userSubcategory = new user_subcategories_tbl
+                    {
+                        uid = userId,
+                        subcatId = subcatId,
+                        catId = db.sub_category_tbl
+                                    .Where(sc => sc.subcat_id == subcatId)
+                                    .Select(sc => sc.category_tbl.cat_id)
+                                    .FirstOrDefault()
+                    };
+                                       
+
+                    db.user_subcategories_tbl.Add(userSubcategory);
+                }
+
+                db.SaveChanges();
+
+                var selectedSubcategories = db.user_subcategories_tbl
+                    .Where(usc => usc.uid == userId)
+                    .Select(usc => new
+                    {
+                        usc.sub_category_tbl.subcat_id,
+                        usc.sub_category_tbl.subcat_name
+                    })
+                    .ToList();
+
+                return Json(new { success = true, selectedSubcategories = selectedSubcategories });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error: " + ex.Message });
+            }
+        } 
+    
+
 
         public ActionResult Create()
         {
-            List<category_tbl> catmst= new List<category_tbl>();
-            using (ExpensesEntities db=new ExpensesEntities())
+            List<category_tbl> catmst = new List<category_tbl>();
+            using (ExpensesEntities db = new ExpensesEntities())
             {
                 var allData = db.category_tbl.ToList();
 
-               
+
                 foreach (var item in allData)
                 {
                     catmst.Add(new category_tbl
@@ -77,11 +165,11 @@ namespace Expenses_Management_System.Controllers
                 ViewBag.CAT = new SelectList(catmst, "cat_id", "cat_name");
                 return View();
             }
-            
+
         }
 
         [HttpPost]
-        public ActionResult Create(int cat_id,string subcat_name)
+        public ActionResult Create(int cat_id, string subcat_name)
         {
             using (ExpensesEntities db = new ExpensesEntities())
             {
@@ -90,14 +178,14 @@ namespace Expenses_Management_System.Controllers
                 s.created_on = DateTime.Now;
                 s.created_by = "Lalit";
                 s.fkcat_id = cat_id;
-                s.subcat_name= subcat_name;
+                s.subcat_name = subcat_name;
                 var sub = db.sub_category_tbl.Add(s);
                 int a = db.SaveChanges();
-                if(a > 0)
+                if (a > 0)
                 {
                     TempData["InsertMsg"] = "<script>alert('Inserted Successfully')</script>";
                     ModelState.Clear();
-                    return RedirectToAction("Index" , "SubCategory");
+                    return RedirectToAction("Index", "SubCategory");
                 }
                 else
                 {
@@ -105,19 +193,19 @@ namespace Expenses_Management_System.Controllers
                     ModelState.Clear();
                     return RedirectToAction("Index", "SubCategory");
                 }
-                
+
             }
-                    
+
         }
 
-        
+
 
         public ActionResult Edit(int id)
         {
             List<category_tbl> catmst = new List<category_tbl>();
             using (ExpensesEntities db = new ExpensesEntities())
             {
-                
+
                 var allData = db.category_tbl.ToList();
                 var catmstt = allData.Select(item => new category_tbl
                 {
@@ -146,15 +234,15 @@ namespace Expenses_Management_System.Controllers
                 return View(subCategoryViewModel);
             }
 
-            
-            
-        
-            
+
+
+
+
         }
         [HttpPost]
         public ActionResult Edit(Expenses_Management_System.Models.subcategory s)
         {
-            using(ExpensesEntities db = new ExpensesEntities())
+            using (ExpensesEntities db = new ExpensesEntities())
             {
                 if (s.subcat_id == 0)
                 {
@@ -166,7 +254,7 @@ namespace Expenses_Management_System.Controllers
                 try
                 {
                     var existingCat = db.sub_category_tbl.Find(s.subcat_id);
-                    if(existingCat == null)
+                    if (existingCat == null)
                     {
                         TempData["UpdateSubMsg"] = "<script>alert('SubCategory not found')</script>";
                         return RedirectToAction("Index", "SubCategory");
@@ -187,7 +275,7 @@ namespace Expenses_Management_System.Controllers
                     }
 
                 }
-                catch(DBConcurrencyException)
+                catch (DBConcurrencyException)
                 {
                     TempData["UpdateSubMsg"] = "<script>alert('Concurrency error occurred while updating SubCategory')</script>";
                 }
@@ -198,7 +286,7 @@ namespace Expenses_Management_System.Controllers
 
                 return RedirectToAction("Index", "SubCategory");
             }
-            
+
         }
 
         public ActionResult Delete(int id)
@@ -224,7 +312,7 @@ namespace Expenses_Management_System.Controllers
                 return View();
             }
 
-            
+
         }
 
         public ActionResult Details(int id)
@@ -234,7 +322,7 @@ namespace Expenses_Management_System.Controllers
                 var catId = db.sub_category_tbl.Include(i => i.category_tbl).Where(modal => modal.subcat_id == id).FirstOrDefault();
                 return View(catId);
             }
-          
+
         }
     }
 }

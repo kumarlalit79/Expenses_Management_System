@@ -3,7 +3,7 @@
 @{
     Layout = null;
     //var Otpvisible = ViewBag.otp as IEnumerable<Expenses_Management_System.Models.Expenses>;
-    
+
 }
 
 <!DOCTYPE html>
@@ -31,16 +31,11 @@
             margin: 0 auto; /* Centers the image */
         }
 
-        
+
 
         .login_form {
             padding-top: 40px;
-            
         }
-
-       
-
-        
     </style>
 </head>
 <body>
@@ -48,7 +43,7 @@
     <div>
         <div class="container-fluid">
             <div class="row main-content text-center bg-primary">
-                
+
                 <div class="col-md-5 company__info text-white d-flex flex-column justify-content-center align-items-center bg-primary">
                     <h3 class="mb-4">EMS</h3>
                     <img alt="EMS" src="~/Content/Login/loboEMS.jpeg" style="width: 200px; height: 150px;" />
@@ -65,33 +60,33 @@
                             {
                                 @Html.AntiForgeryToken()
 
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        @Html.EditorFor(model => model.mobile_num, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your mobile number" } })
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.mobile_num, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your mobile number" } })
+                                        </div>
+
+
                                     </div>
 
+                                    <div class="form-group" style="@(ViewBag.otp ? "" : "display:none;")">
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.OTP, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter 4-Digit OTP", @id = "otpTextbox" } })
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(ViewBag.otperror))
+                                        {
+                                            <p class="text-danger">@ViewBag.otperror</p>
+                                        }
 
-                                </div>
-
-                                <div class="form-group" style="@(ViewBag.otp ? "" : "display:none;")">
-                                    <div class="col-md-12">
-                                        @Html.EditorFor(model => model.OTP, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter 4-Digit OTP", @id = "otpTextbox" } })
                                     </div>
-                                    @if (!string.IsNullOrEmpty(ViewBag.otperror))
-                                    {
-                                        <p class="text-danger">@ViewBag.otperror</p>
-                                    }
-                                    
-                                </div>
 
-                                <!-- Minimized gap between the text box and login button -->
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <input type="submit" value="Login" id="Loginbtn" class="btn btn-primary btn-block" />
+                                    <!-- Minimized gap between the text box and login button -->
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input type="submit" value="Login" id="Loginbtn" class="btn btn-primary btn-block" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                         </div>
                     </div>

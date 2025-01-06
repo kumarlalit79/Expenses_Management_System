@@ -28,6 +28,15 @@
         <EntityTypeShape EntityType="ExpensesnewModel.user_categories_tbl" Width="1.5" PointX="8.25" PointY="4.5" />
         <AssociationConnector Association="ExpensesnewModel.FK__user_cate__catId__17036CC0" />
         <AssociationConnector Association="ExpensesnewModel.FK__user_catego__uid__160F4887" />
+        <EntityTypeShape EntityType="ExpensesnewModel.user_subcategories_tbl" Width="1.5" PointX="8.25" PointY="12.125" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_subc__catId__3D2915A8" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_subc__subca__3E1D39E1" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_subcat__uid__3C34F16F" />
+        <EntityTypeShape EntityType="ExpensesnewModel.user_sub_subcategory_tbl" Width="1.5" PointX="10.5" PointY="8" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_sub___catId__41EDCAC5" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_sub___subca__42E1EEFE" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_sub___subsu__43D61337" />
+        <AssociationConnector Association="ExpensesnewModel.FK__user_sub_su__uid__40F9A68C" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

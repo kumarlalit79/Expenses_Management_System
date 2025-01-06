@@ -76,7 +76,7 @@ namespace Expenses_Management_System.Controllers
                         Session["Type"] = MobNum.type;
                         Session["Mobile"] = MobNum.mobile_num;
                         Session["Name"] = MobNum.user_name;
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "SignIn");
                     }
                 }
                 else

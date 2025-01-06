@@ -102,6 +102,25 @@
           <Property Name="uid" Type="int" Nullable="false" />
           <Property Name="catId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="user_sub_subcategory_tbl">
+          <Key>
+            <PropertyRef Name="user_sub_subcategory_id" />
+          </Key>
+          <Property Name="user_sub_subcategory_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="int" />
+          <Property Name="catId" Type="int" />
+          <Property Name="subcatId" Type="int" />
+          <Property Name="subsubcatId" Type="int" />
+        </EntityType>
+        <EntityType Name="user_subcategories_tbl">
+          <Key>
+            <PropertyRef Name="user_subcat_id" />
+          </Key>
+          <Property Name="user_subcat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uid" Type="int" />
+          <Property Name="catId" Type="int" />
+          <Property Name="subcatId" Type="int" />
+        </EntityType>
         <EntityType Name="user_tbl">
           <Key>
             <PropertyRef Name="user_id" />
@@ -141,6 +160,90 @@
               <PropertyRef Name="user_id" />
             </Principal>
             <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub___catId__41EDCAC5">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="user_sub_subcategory_tbl" Type="Self.user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub___subca__42E1EEFE">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="user_sub_subcategory_tbl" Type="Self.user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="subcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub___subsu__43D61337">
+          <End Role="sub_sub_category_tbl" Type="Self.sub_sub_category_tbl" Multiplicity="0..1" />
+          <End Role="user_sub_subcategory_tbl" Type="Self.user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_sub_category_tbl">
+              <PropertyRef Name="sub_sub_catId" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="subsubcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub_su__uid__40F9A68C">
+          <End Role="user_tbl" Type="Self.user_tbl" Multiplicity="0..1" />
+          <End Role="user_sub_subcategory_tbl" Type="Self.user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_subc__catId__3D2915A8">
+          <End Role="category_tbl" Type="Self.category_tbl" Multiplicity="0..1" />
+          <End Role="user_subcategories_tbl" Type="Self.user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_subc__subca__3E1D39E1">
+          <End Role="sub_category_tbl" Type="Self.sub_category_tbl" Multiplicity="0..1" />
+          <End Role="user_subcategories_tbl" Type="Self.user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
+              <PropertyRef Name="subcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_subcat__uid__3C34F16F">
+          <End Role="user_tbl" Type="Self.user_tbl" Multiplicity="0..1" />
+          <End Role="user_subcategories_tbl" Type="Self.user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
               <PropertyRef Name="uid" />
             </Dependent>
           </ReferentialConstraint>
@@ -287,6 +390,8 @@
           <EntitySet Name="sub_category_tbl" EntityType="Self.sub_category_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sub_sub_category_tbl" EntityType="Self.sub_sub_category_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_categories_tbl" EntityType="Self.user_categories_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_sub_subcategory_tbl" EntityType="Self.user_sub_subcategory_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_subcategories_tbl" EntityType="Self.user_subcategories_tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_tbl" EntityType="Self.user_tbl" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__user_cate__catId__17036CC0" Association="Self.FK__user_cate__catId__17036CC0">
             <End Role="category_tbl" EntitySet="category_tbl" />
@@ -295,6 +400,34 @@
           <AssociationSet Name="FK__user_catego__uid__160F4887" Association="Self.FK__user_catego__uid__160F4887">
             <End Role="user_tbl" EntitySet="user_tbl" />
             <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub___catId__41EDCAC5" Association="Self.FK__user_sub___catId__41EDCAC5">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub___subca__42E1EEFE" Association="Self.FK__user_sub___subca__42E1EEFE">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub___subsu__43D61337" Association="Self.FK__user_sub___subsu__43D61337">
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub_su__uid__40F9A68C" Association="Self.FK__user_sub_su__uid__40F9A68C">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_subc__catId__3D2915A8" Association="Self.FK__user_subc__catId__3D2915A8">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_subc__subca__3E1D39E1" Association="Self.FK__user_subc__subca__3E1D39E1">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_subcat__uid__3C34F16F" Association="Self.FK__user_subcat__uid__3C34F16F">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
           </AssociationSet>
           <AssociationSet Name="FK_AssignCardToBank_tbl_BankCard" Association="Self.FK_AssignCardToBank_tbl_BankCard">
             <End Role="BankCard" EntitySet="BankCard" />
@@ -380,6 +513,8 @@
           <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK_sub_category_tbl_sub_category_tbl" FromRole="category_tbl" ToRole="sub_category_tbl" />
           <NavigationProperty Name="sub_sub_category_tbl" Relationship="Self.FK_sub_sub_category_tbl_category_tbl" FromRole="category_tbl" ToRole="sub_sub_category_tbl" />
           <NavigationProperty Name="user_categories_tbl" Relationship="ExpensesnewModel.FK__user_cate__catId__17036CC0" FromRole="category_tbl" ToRole="user_categories_tbl" />
+          <NavigationProperty Name="user_subcategories_tbl" Relationship="ExpensesnewModel.FK__user_subc__catId__3D2915A8" FromRole="category_tbl" ToRole="user_subcategories_tbl" />
+          <NavigationProperty Name="user_sub_subcategory_tbl" Relationship="ExpensesnewModel.FK__user_sub___catId__41EDCAC5" FromRole="category_tbl" ToRole="user_sub_subcategory_tbl" />
         </EntityType>
         <EntityType Name="expenses_tbl">
           <Key>
@@ -440,6 +575,8 @@
           <NavigationProperty Name="category_tbl" Relationship="Self.FK_sub_category_tbl_sub_category_tbl" FromRole="sub_category_tbl" ToRole="category_tbl" />
           <NavigationProperty Name="expenses_tbl" Relationship="Self.FK_expenses_tbl_expenses_tbl1" FromRole="sub_category_tbl" ToRole="expenses_tbl" />
           <NavigationProperty Name="sub_sub_category_tbl" Relationship="Self.FK_sub_sub_category_tbl_sub_category_tbl" FromRole="sub_category_tbl" ToRole="sub_sub_category_tbl" />
+          <NavigationProperty Name="user_subcategories_tbl" Relationship="ExpensesnewModel.FK__user_subc__subca__3E1D39E1" FromRole="sub_category_tbl" ToRole="user_subcategories_tbl" />
+          <NavigationProperty Name="user_sub_subcategory_tbl" Relationship="ExpensesnewModel.FK__user_sub___subca__42E1EEFE" FromRole="sub_category_tbl" ToRole="user_sub_subcategory_tbl" />
         </EntityType>
         <EntityType Name="sub_sub_category_tbl">
           <Key>
@@ -454,6 +591,7 @@
           <NavigationProperty Name="category_tbl" Relationship="Self.FK_sub_sub_category_tbl_category_tbl" FromRole="sub_sub_category_tbl" ToRole="category_tbl" />
           <NavigationProperty Name="expenses_tbl" Relationship="Self.FK_expenses_tbl_sub_sub_category_tbl" FromRole="sub_sub_category_tbl" ToRole="expenses_tbl" />
           <NavigationProperty Name="sub_category_tbl" Relationship="Self.FK_sub_sub_category_tbl_sub_category_tbl" FromRole="sub_sub_category_tbl" ToRole="sub_category_tbl" />
+          <NavigationProperty Name="user_sub_subcategory_tbl" Relationship="ExpensesnewModel.FK__user_sub___subsu__43D61337" FromRole="sub_sub_category_tbl" ToRole="user_sub_subcategory_tbl" />
         </EntityType>
         <EntityType Name="user_tbl">
           <Key>
@@ -476,6 +614,8 @@
           <Property Name="OTP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="OTP_created_on" Type="DateTime" Precision="3" />
           <Property Name="OTP_ends_on" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="user_subcategories_tbl" Relationship="ExpensesnewModel.FK__user_subcat__uid__3C34F16F" FromRole="user_tbl" ToRole="user_subcategories_tbl" />
+          <NavigationProperty Name="user_sub_subcategory_tbl" Relationship="ExpensesnewModel.FK__user_sub_su__uid__40F9A68C" FromRole="user_tbl" ToRole="user_sub_subcategory_tbl" />
         </EntityType>
         <Association Name="FK_AssignCardToBank_tbl_BankCard">
           <End Role="BankCard" Type="Self.BankCard" Multiplicity="0..1" />
@@ -672,6 +812,36 @@
             <End Role="user_tbl" EntitySet="user_tbl" />
             <End Role="user_categories_tbl" EntitySet="user_categories_tbl" />
           </AssociationSet>
+          <EntitySet Name="user_subcategories_tbl" EntityType="ExpensesnewModel.user_subcategories_tbl" />
+          <AssociationSet Name="FK__user_subc__catId__3D2915A8" Association="ExpensesnewModel.FK__user_subc__catId__3D2915A8">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_subc__subca__3E1D39E1" Association="ExpensesnewModel.FK__user_subc__subca__3E1D39E1">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_subcat__uid__3C34F16F" Association="ExpensesnewModel.FK__user_subcat__uid__3C34F16F">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_subcategories_tbl" EntitySet="user_subcategories_tbl" />
+          </AssociationSet>
+          <EntitySet Name="user_sub_subcategory_tbl" EntityType="ExpensesnewModel.user_sub_subcategory_tbl" />
+          <AssociationSet Name="FK__user_sub___catId__41EDCAC5" Association="ExpensesnewModel.FK__user_sub___catId__41EDCAC5">
+            <End Role="category_tbl" EntitySet="category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub___subca__42E1EEFE" Association="ExpensesnewModel.FK__user_sub___subca__42E1EEFE">
+            <End Role="sub_category_tbl" EntitySet="sub_category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub___subsu__43D61337" Association="ExpensesnewModel.FK__user_sub___subsu__43D61337">
+            <End Role="sub_sub_category_tbl" EntitySet="sub_sub_category_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_sub_su__uid__40F9A68C" Association="ExpensesnewModel.FK__user_sub_su__uid__40F9A68C">
+            <End Role="user_tbl" EntitySet="user_tbl" />
+            <End Role="user_sub_subcategory_tbl" EntitySet="user_sub_subcategory_tbl" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="user_categories_tbl">
           <Key>
@@ -703,6 +873,116 @@
               <PropertyRef Name="user_id" />
             </Principal>
             <Dependent Role="user_categories_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="user_subcategories_tbl">
+          <Key>
+            <PropertyRef Name="user_subcat_id" />
+          </Key>
+          <Property Name="user_subcat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int32" />
+          <Property Name="catId" Type="Int32" />
+          <Property Name="subcatId" Type="Int32" />
+          <NavigationProperty Name="category_tbl" Relationship="ExpensesnewModel.FK__user_subc__catId__3D2915A8" FromRole="user_subcategories_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="sub_category_tbl" Relationship="ExpensesnewModel.FK__user_subc__subca__3E1D39E1" FromRole="user_subcategories_tbl" ToRole="sub_category_tbl" />
+          <NavigationProperty Name="user_tbl" Relationship="ExpensesnewModel.FK__user_subcat__uid__3C34F16F" FromRole="user_subcategories_tbl" ToRole="user_tbl" />
+        </EntityType>
+        <Association Name="FK__user_subc__catId__3D2915A8">
+          <End Type="ExpensesnewModel.category_tbl" Role="category_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_subcategories_tbl" Role="user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_subc__subca__3E1D39E1">
+          <End Type="ExpensesnewModel.sub_category_tbl" Role="sub_category_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_subcategories_tbl" Role="user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
+              <PropertyRef Name="subcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_subcat__uid__3C34F16F">
+          <End Type="ExpensesnewModel.user_tbl" Role="user_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_subcategories_tbl" Role="user_subcategories_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_subcategories_tbl">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="user_sub_subcategory_tbl">
+          <Key>
+            <PropertyRef Name="user_sub_subcategory_id" />
+          </Key>
+          <Property Name="user_sub_subcategory_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uid" Type="Int32" />
+          <Property Name="catId" Type="Int32" />
+          <Property Name="subcatId" Type="Int32" />
+          <Property Name="subsubcatId" Type="Int32" />
+          <NavigationProperty Name="category_tbl" Relationship="ExpensesnewModel.FK__user_sub___catId__41EDCAC5" FromRole="user_sub_subcategory_tbl" ToRole="category_tbl" />
+          <NavigationProperty Name="sub_category_tbl" Relationship="ExpensesnewModel.FK__user_sub___subca__42E1EEFE" FromRole="user_sub_subcategory_tbl" ToRole="sub_category_tbl" />
+          <NavigationProperty Name="sub_sub_category_tbl" Relationship="ExpensesnewModel.FK__user_sub___subsu__43D61337" FromRole="user_sub_subcategory_tbl" ToRole="sub_sub_category_tbl" />
+          <NavigationProperty Name="user_tbl" Relationship="ExpensesnewModel.FK__user_sub_su__uid__40F9A68C" FromRole="user_sub_subcategory_tbl" ToRole="user_tbl" />
+        </EntityType>
+        <Association Name="FK__user_sub___catId__41EDCAC5">
+          <End Type="ExpensesnewModel.category_tbl" Role="category_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_sub_subcategory_tbl" Role="user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category_tbl">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="catId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub___subca__42E1EEFE">
+          <End Type="ExpensesnewModel.sub_category_tbl" Role="sub_category_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_sub_subcategory_tbl" Role="user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_category_tbl">
+              <PropertyRef Name="subcat_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="subcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub___subsu__43D61337">
+          <End Type="ExpensesnewModel.sub_sub_category_tbl" Role="sub_sub_category_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_sub_subcategory_tbl" Role="user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sub_sub_category_tbl">
+              <PropertyRef Name="sub_sub_catId" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
+              <PropertyRef Name="subsubcatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_sub_su__uid__40F9A68C">
+          <End Type="ExpensesnewModel.user_tbl" Role="user_tbl" Multiplicity="0..1" />
+          <End Type="ExpensesnewModel.user_sub_subcategory_tbl" Role="user_sub_subcategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_tbl">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_sub_subcategory_tbl">
               <PropertyRef Name="uid" />
             </Dependent>
           </ReferentialConstraint>
@@ -836,6 +1116,27 @@
                 <ScalarProperty Name="catId" ColumnName="catId" />
                 <ScalarProperty Name="uid" ColumnName="uid" />
                 <ScalarProperty Name="user_cat_id" ColumnName="user_cat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_subcategories_tbl">
+            <EntityTypeMapping TypeName="ExpensesnewModel.user_subcategories_tbl">
+              <MappingFragment StoreEntitySet="user_subcategories_tbl">
+                <ScalarProperty Name="subcatId" ColumnName="subcatId" />
+                <ScalarProperty Name="catId" ColumnName="catId" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="user_subcat_id" ColumnName="user_subcat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_sub_subcategory_tbl">
+            <EntityTypeMapping TypeName="ExpensesnewModel.user_sub_subcategory_tbl">
+              <MappingFragment StoreEntitySet="user_sub_subcategory_tbl">
+                <ScalarProperty Name="subsubcatId" ColumnName="subsubcatId" />
+                <ScalarProperty Name="subcatId" ColumnName="subcatId" />
+                <ScalarProperty Name="catId" ColumnName="catId" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="user_sub_subcategory_id" ColumnName="user_sub_subcategory_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,58 +1,74 @@
 ﻿@model IEnumerable<Expenses_Management_System.Models.sub_sub_category_tbl>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Sub-Subcategory Selection";
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
-<h2>Sub-Sub Category Details</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-bordered red-border text-center">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Category Name</th>
-            <th>Sub Category Name</th>
-            <th>Sub Sub Category Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.sub_sub_catId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.category_tbl.cat_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sub_category_tbl.subcat_name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sub_sub_catName)
-            </td>
+<div id="subsubcategory-section">
+    <div id="user-selected-subsubcategories">
+        <h3>Your Selected Sub-Subcategories:</h3>
+        <table class="table table-bordered red-border text-center" id="selected-subsubcategory-table" border="1">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category Name</th>
+                    <th>Subcategory Name</th>
+                    <th>Sub-Subcategory Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.UserSelectedSubSubcategories != null)
+                {
+                    int i = 1;
+                    foreach (var subSubcategory in ViewBag.UserSelectedSubSubcategories)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@subSubcategory.sub_category_tbl.category_tbl.cat_name</td>
+                            <td>@subSubcategory.sub_category_tbl.subcat_name</td>
+                            <td>@subSubcategory.sub_sub_catName</td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+        <a href="#" id="choose-more-subsubcategories-link">Select more sub-subcategories</a>
+    </div>
 
+    <div id="subsubcategory-selection-container" style="display:none;">
+        <!-- Sub-Subcategories will be loaded here via AJAX -->
+    </div>
+</div>
 
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.created_on)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.created_by)
-                </td>*@
-            @*
-            *@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.sub_sub_catId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.sub_sub_catId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.sub_sub_catId })
-            </td>
-        </tr>
-    }
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Load sub-subcategories via AJAX when link is clicked
+            $('#choose-more-subsubcategories-link').click(function (e) {
+                e.preventDefault();
 
-</table>
+                $('#subsubcategory-selection-container').html('<p>Loading sub-subcategories...</p>');
+
+                $.ajax({
+                    url: '@Url.Action("LoadSubSubcategories", "SubSubCategory")',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#subsubcategory-selection-container').html(data).show();
+                        $('#user-selected-subsubcategories').hide();
+                    },
+                    error: function () {
+                        alert('Error loading sub-subcategories.');
+                    }
+                });
+            });
+        });
+    </script>
+}

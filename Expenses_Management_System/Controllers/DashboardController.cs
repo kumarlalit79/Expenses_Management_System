@@ -431,12 +431,7 @@ namespace Expenses_Management_System.Controllers
                 else
                 {
                     monthnumber = int.Parse(monthn);
-
-
                 }
-
-
-
 
                 var rawData = db.expenses_tbl
                 .Include(e => e.category_tbl)

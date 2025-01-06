@@ -42,7 +42,6 @@ namespace Expenses_Management_System.Controllers
             return View(unselectedCategories);
         }
 
-
         public ActionResult LoadCategories()
         {
             int userId = int.Parse(Session["userid"].ToString());
@@ -56,14 +55,10 @@ namespace Expenses_Management_System.Controllers
                                        .Select(uc => uc.catId)
                                        .ToList();
 
-            
             ViewBag.SelectedCategoryIds = selectedCategoryIds;
 
             return PartialView("_CategoriesPartial", allCategories);
         }
-
-        
-
 
 
         [HttpPost]
@@ -129,9 +124,6 @@ namespace Expenses_Management_System.Controllers
                 return Json(new { success = false, message = "Error: " + ex.Message });
             }
         }
-
-
-
 
         public ActionResult Create()
         {

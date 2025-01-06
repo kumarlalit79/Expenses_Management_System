@@ -21,6 +21,8 @@ namespace Expenses_Management_System.Models
             this.sub_category_tbl = new HashSet<sub_category_tbl>();
             this.sub_sub_category_tbl = new HashSet<sub_sub_category_tbl>();
             this.user_categories_tbl = new HashSet<user_categories_tbl>();
+            this.user_subcategories_tbl = new HashSet<user_subcategories_tbl>();
+            this.user_sub_subcategory_tbl = new HashSet<user_sub_subcategory_tbl>();
         }
     
         public int cat_id { get; set; }
@@ -36,5 +38,9 @@ namespace Expenses_Management_System.Models
         public virtual ICollection<sub_sub_category_tbl> sub_sub_category_tbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_categories_tbl> user_categories_tbl { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_subcategories_tbl> user_subcategories_tbl { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_sub_subcategory_tbl> user_sub_subcategory_tbl { get; set; }
     }
 }

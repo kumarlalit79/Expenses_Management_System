@@ -2,7 +2,7 @@
 
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
     <!-- Column for category checkboxes with border -->
-    <div style="flex: 1; margin-right: 20px; border: 1px solid #ccc; border-radius: 20px; padding: 10px;">
+    <div style="flex: 1; margin-right: 20px; border: 1px solid #ccc;  padding: 10px;">
         <h3>Select Categories</h3>
         <form id="categories-form">
             <ul style="list-style: none; padding-left: 0;">
@@ -16,15 +16,17 @@
                 }
             </ul>
         </form>
+        <div>
+            <button class="btn btn-primary" id="submit-categories">Save Categories</button>
+        </div>
     </div>
 
     <!-- Centered button -->
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 10px; height: 100%;">
-        <button id="submit-categories">Save Categories</button>
-    </div>
+    
 
     
 </div>
+
 
 @section Scripts {
     <script>

@@ -1,67 +1,42 @@
-﻿@model Expenses_Management_System.Models.sub_category_tbl
+﻿@*@model IEnumerable<Expenses_Management_System.Models.sub_category_tbl>
 
-
-
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
-    <!-- Column for category checkboxes with border -->
-    <div style="flex: 1; margin-right: 20px; border: 1px solid #ccc; border-radius: 20px; padding: 10px;">
-        <h3>Select Categories</h3>
-        <form id="categories-form">
-            <ul style="list-style: none; padding-left: 0;">
-                @*@foreach (var category in Model)
+    <div style="border: 1px solid #ccc; margin-top: 10px; padding: 10px; border-radius: 8px;">
+        <h3>Select Subcategories</h3>
+        <form id="subcategories-form">
+            <ul style="list-style: none; padding-left: 0; margin-top: 10px;">
+                @foreach (var subcategory in Model)
                 {
-                    bool isDisabled = ViewBag.SelectedCategoryIds != null && ViewBag.SelectedCategoryIds.Contains(category.cat_id);
-                    <li style="margin-bottom: 10px;">
-                        <input type="checkbox" name="selectedCategories" value="@category.cat_id" @(isDisabled ? "disabled" : "") />
-                        @category.cat_name
+                    bool isDisabled = ViewBag.SelectedSubcategoryIds != null && ViewBag.SelectedSubcategoryIds.Contains(subcategory.subcat_id);
+                    <li style="margin-bottom: 15px; display: flex; align-items: center;">
+                        <input type="checkbox" name="selectedSubcategories" value="@subcategory.subcat_id" @(isDisabled ? "disabled" : "") style="margin-right: 8px;" />
+                        <span>@subcategory.subcat_name (@subcategory.category_tbl.cat_name)</span>
                     </li>
-                }*@
+                }
             </ul>
         </form>
-    </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button id="submit-subcategories" class="btn btn-primary">Save Subcategories</button>
 
-    <!-- Centered button -->
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 10px; height: 100%;">
-        <button id="submit-categories">Save Categories</button>
-    </div>
+        </div>
+    </div>*@
 
 
+
+@model IEnumerable<Expenses_Management_System.Models.sub_category_tbl>
+
+<div style="border: 1px solid #ccc; margin-top: 10px; padding: 10px;">
+    <h3>Select Subcategories</h3>
+    <form id="subcategories-form">
+        <ul style="list-style: none;">
+            @foreach (var subcategory in Model)
+            {
+                bool isDisabled = ViewBag.SelectedSubcategoryIds != null && ViewBag.SelectedSubcategoryIds.Contains(subcategory.subcat_id);
+                <li>
+                    <input type="checkbox" name="selectedSubcategories" value="@subcategory.subcat_id" @(isDisabled ? "disabled" : "") />
+                    @subcategory.subcat_name (@subcategory.category_tbl.cat_name)
+                </li>
+            }
+        </ul>
+    </form>
+    <button id="submit-subcategories" class="btn btn-primary">Save Subcategories</button>
 </div>
-
-@section Scripts {
-    <script>
-        $(document).on('click', '#submit-categories', function () {
-            // Get all selected categories
-            var selectedCategories = [];
-            $('input[name="selectedCategories"]:checked:not(:disabled)').each(function () {
-                selectedCategories.push($(this).val());
-            });
-
-            // Send selected categories to the server (via AJAX)
-            $.ajax({
-                url: '@Url.Action("SubmitCategories", "Home")',
-                type: 'POST',
-                data: { categories: selectedCategories },
-                success: function (response) {
-                    if (response.success) {
-                        // Update the list of selected categories
-                        var selectedCategoriesList = $('#selected-categories-list');
-                        selectedCategoriesList.empty(); // Clear the existing list
-
-                        $.each(response.selectedCategories, function (index, category) {
-                            selectedCategoriesList.append('<li>' + category.cat_name + '</li>');
-                        });
-
-                        // Disable the checkboxes that are selected
-                        $('input[name="selectedCategories"]:checked').attr('disabled', true);
-
-                        alert('Categories saved successfully!');
-                    } else {
-                        alert('Error saving categories.');
-                    }
-                }
-            });
-        });
-    </script>
-}
-
